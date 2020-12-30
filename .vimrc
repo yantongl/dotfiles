@@ -1,112 +1,221 @@
+" ----------------------------------------------------------------------------
+" START
+" ----------------------------------------------------------------------------
+
+set nocompatible " be iMproved,  required
+filetype off     " required
+set fdm=syntax " folds are defined by syntax highlighting
+
+
+" ----------------------------------------------------------------------------
+" EDITING
+" ----------------------------------------------------------------------------
+
+" Get the defaults that most users want.
+if !has("nvim")
+    source $VIMRUNTIME/defaults.vim
+endif
+
+" VIM system settings {{{
+    set clipboard=unnamed   " Use the OS clipboard by default (on versions compiled with `+clipboard`)
+    set wildmenu            " Enhance command-line completion
+    set wildmode=longest,list,full
+    set esckeys             " Allow cursor keys in insert mode
+    set backspace=indent,eol,start " Allow backspace in insert mode
+    set ttyfast             " Optimize for fast terminal connections
+    set gdefault            " Add the g flag to search/replace by default
+    let mapleader=","       " Change mapleader
+
+    " Centralize backups, swapfiles and undo history
+    set backupdir=~/.vim/backups
+    set directory=~/.vim/swaps
+    if exists("&undodir")
+        set undodir=~/.vim/undo
+    endif
+" }}}
+
+" Set font and encoding {{{
+    set encoding=utf-8 nobomb " Use UTF-8 without BOM
+    let os=substitute(system('uname'), '\n', '', '')
+    if has("gui_running")
+        if os == 'Mac' || os == 'Darwin' " Mac
+        elseif os == 'Linux' " Linux
+        else " windows
+        endif
+        set guifont=Courier_New:h10::cDEFAULT
+        " set guifontwide=KaiTi:h12 " 宽字体
+    endif
+" }}}
+
+
+" Editting {{{
+    set expandtab       " replace tab with spaces
+    set autoindent
+    set tabstop=4
+    set shiftwidth=4    " # of spaces to use for each step of (auto)indent
+    set softtabstop=4   " # of spaces that a tab counts for while performing editing
+    set textwidth=100   " maximum width of a line. Longer line will be broken into lines.
+    set colorcolumn=+1  " highlight column after textwidth
+
+    set backspace=indent,eol,start  " make backspace work like most other apps
+
+    " searching
+    set hlsearch    " Highlight searches
+    set incsearch   " Highlight dynamically as pattern is typed
+    set ignorecase  " Ignore case of searches
+    set smartcase   " override the 'ignorecase' option if search pattern has upper case
+" }}}
+
+syntax on
+
+" Automatic commands
+if has("autocmd")
+    filetype on " Enable file type detection
+    " Treat .json files as .js
+    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+    " Treat .md files as Markdown
+    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+endif
+
+" ----------------------------------------------------------------------------
+" GUI
+" ----------------------------------------------------------------------------
 " Use the Solarized Dark theme
 set background=dark
 colorscheme solarized
 let g:solarized_termtrans=1
 
-" Make Vim more useful
-set nocompatible
-" Use the OS clipboard by default (on versions compiled with `+clipboard`)
-set clipboard=unnamed
-" Enhance command-line completion
-set wildmenu
-" Allow cursor keys in insert mode
-set esckeys
-" Allow backspace in insert mode
-set backspace=indent,eol,start
-" Optimize for fast terminal connections
-set ttyfast
-" Add the g flag to search/replace by default
-set gdefault
-" Use UTF-8 without BOM
-set encoding=utf-8 nobomb
-" Change mapleader
-let mapleader=","
-" Don’t add empty newlines at the end of files
-set binary
-set noeol
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-	set undodir=~/.vim/undo
+" Termimal UI {{{
+    set number      " Enable line numbers
+    set cursorline  " Highlight current line
+    " (list + listchars) shows “invisible” characters
+    set list
+    set listchars=tab:>-,trail:-
+    set showmatch   " show matching brackets/braces/parantheses
+
+    set laststatus=2 " Always show status line
+    set mouse=a     " Enable mouse in all modes
+    " set noerrorbells " Disable error bells
+    set errorbells
+    set visualbell  " silence the bell, use a flash instead
+    set nostartofline " Don’t reset cursor to start of line when moving around.
+    set ruler       " Show the cursor position
+    set wrap
+    set shortmess=atI " Don’t show the intro message when starting Vim
+    set showmode    " Show the current mode
+    set title       " Show the filename in the window titlebar
+    set showcmd     " Show the (partial) command as it’s being typed
+    set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
+    " Use relative line numbers
+    if exists("&relativenumber")
+        set relativenumber
+        au BufReadPost * set relativenumber
+    endif
+
+    set scrolloff=3 " Start scrolling three lines before the horizontal window border
+" }}}
+
+if has("gui_running")
+    set go+=m  " hide menu bar from guioptions
+    set go-=T  " hide toolbar from guioptions
+
+    " set page size
+    set lines=60
+    " since line number is on, add numberwidth to 100.
+    let &columns=100+&numberwidth
+
+    if !has("nvim")
+        menu C&ustom.VIM\ &Note :e ~/Dropbox/tools/vim/vimrcs/vim.md<CR>
+        menu C&ustom.-sep1- <Nop>
+        menu C&ustom.MYVIMRC        :e $MYVIMRC<CR>
+        menu C&ustom.VIMRC_mapkey  :e ~/Dropbox/tools/vim/vimrcs/_vimrc_mapkey<CR>
+        menu C&ustom.VIMRC_editing :e ~/Dropbox/tools/vim/vimrcs/_vimrc_editing<CR>
+        menu C&ustom.VIMRC_vundle  :e ~/Dropbox/tools/vim/vimrcs/_vimrc_vundle_plugins<CR>
+        " menu C&ustom.-sep2- <Nop>
+    endif
 endif
 
-" Don’t create backups when editing files in certain directories
-set backupskip=/tmp/*,/private/tmp/*
+filetype plugin indent on " load file type plugins + indentation
 
-" Respect modeline in files
-set modeline
-set modelines=4
-" Enable per-directory .vimrc files and disable unsafe commands in them
-set exrc
-set secure
-" Enable line numbers
-set number
-" Enable syntax highlighting
-syntax on
-" Highlight current line
-set cursorline
-" Make tabs as wide as two spaces
-set tabstop=2
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
-" Highlight searches
-set hlsearch
-" Ignore case of searches
-set ignorecase
-" Highlight dynamically as pattern is typed
-set incsearch
-" Always show status line
-set laststatus=2
-" Enable mouse in all modes
-set mouse=a
-" Disable error bells
-set noerrorbells
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-" Show the cursor position
-set ruler
-" Don’t show the intro message when starting Vim
-set shortmess=atI
-" Show the current mode
-set showmode
-" Show the filename in the window titlebar
-set title
-" Show the (partial) command as it’s being typed
-set showcmd
-" Use relative line numbers
-if exists("&relativenumber")
-	set relativenumber
-	au BufReadPost * set relativenumber
-endif
-" Start scrolling three lines before the horizontal window border
-set scrolloff=3
+
+
+" ----------------------------------------------------------------------------
+" MAP KEY
+" ----------------------------------------------------------------------------
+" map mode :
+"     n* : normal mode
+"     v* : visual and selected mode
+"     o* : operator pending mode
+"     i* : insert mode
+"     c* : command line mode
+"     *! : map! = imap & cmap
+"     <None>* : map = nmap & vmap & omap
+"
+" map operation:
+"     *map     : add a mapping, recursively
+"     *noremap : non-recursive mapping
+"     *unmap   : delete a map
+"     *mapclear: clear all key map in given mode
+"
+"    map    noremap    unmap    mapclear
+"   nmap   nnoremap   nunmap   nmapclear
+"   vmap   vnoremap   vunmap   vmapclear
+"   imap   inoremap   iunmap   imapclear
+"   cmap   cnoremap   cunmap   cmapclear
+" ----------------------------------------------------------------------------
+" set F2 as save
+map <F2> :w<CR>
+imap <F2> <ESC>:w<CR>li
+" set F3 as delete buffer (not tab/window)
+map <F3> :bd<CR>
+imap <F3> <ESC>:bd<CR>li
+" set F4 as save and quit
+map <F4> :wq<CR>
+imap <F4> <ESC>:wq<CR>li
+
+" set <F5> to refresh vimrc
+map <F5> :so $MYVIMRC<CR>
+imap <F5> <ESC>:so $MYVIMRC<CR>li
+
+map <F7> :!python %<CR>
+imap <F7> <ESC>:w<CR>:!python %<CR>
+
+" set <F10> to retab
+map <F10> :retab<CR>
+imap <F10> <ESC>:retab<CR>li
+
+" CTRL-A is Select all
+noremap <C-A> gggH<C-O>G
+inoremap <C-A> <C-O>gg<C-O>gH<C-O>G
+cnoremap <C-A> <C-C>gggH<C-O>G
+onoremap <C-A> <C-C>gggH<C-O>G
+snoremap <C-A> <C-C>gggH<C-O>G
+xnoremap <C-A> <C-C>ggVG
+
+" Tab manipulation
+nmap <C-S-tab> :tabprevious<cr>
+map  <C-S-tab> :tabprevious<cr>
+imap <C-S-tab> <ESC>:tabprevious<cr>i
+nmap <C-tab> :tabnext<cr>
+map  <C-tab> :tabnext<cr>
+imap <C-tab> <ESC>:tabnext<cr>i
+nmap <C-t> :tabnew<cr>
+map  <C-t> :tabnew<cr>
+imap <C-t> <ESC>:tabnew<cr>i
+
 
 " Strip trailing whitespace (,ss)
 function! FormatCleanup()
-	" Strip whitespaces
-	let save_cursor = getpos(".")
-	let old_query = getreg('/')
-	:%s/\s\+$//e
-	call setpos('.', save_cursor)
-	call setreg('/', old_query)
+    " Strip whitespaces
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    :%s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
 
-	" other clean up
-	:retab
-	:%s/\r//ge   " replace DOS line-end characters to UNIX line-end
+    " other clean up
+    :retab
+    :%s/\r//ge   " replace DOS line-end characters to UNIX line-end
 endfunction
-
 noremap <leader>ss :call FormatCleanup()<CR>
-" Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
 
-" Automatic commands
-if has("autocmd")
-	" Enable file type detection
-	filetype on
-	" Treat .json files as .js
-	autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-	" Treat .md files as Markdown
-	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-endif
