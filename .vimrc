@@ -1,10 +1,8 @@
 " ----------------------------------------------------------------------------
 " START
 " ----------------------------------------------------------------------------
-
 set nocompatible " be iMproved,  required
 filetype off     " required
-set fdm=syntax " folds are defined by syntax highlighting
 
 
 " ----------------------------------------------------------------------------
@@ -16,11 +14,10 @@ if !has("nvim")
     source $VIMRUNTIME/defaults.vim
 endif
 
-" VIM system settings {{{
-    set clipboard=unnamed   " Use the OS clipboard by default (on versions compiled with `+clipboard`)
+" VIM system settings
+    set clipboard=unnamed   " Use the OS clipboard by default
     set wildmenu            " Enhance command-line completion
     set wildmode=longest,list,full
-    set esckeys             " Allow cursor keys in insert mode
     set backspace=indent,eol,start " Allow backspace in insert mode
     set ttyfast             " Optimize for fast terminal connections
     set gdefault            " Add the g flag to search/replace by default
@@ -32,23 +29,18 @@ endif
     if exists("&undodir")
         set undodir=~/.vim/undo
     endif
-" }}}
+"
 
-" Set font and encoding {{{
+" Set font and encoding
     set encoding=utf-8 nobomb " Use UTF-8 without BOM
-    let os=substitute(system('uname'), '\n', '', '')
-    if has("gui_running")
-        if os == 'Mac' || os == 'Darwin' " Mac
-        elseif os == 'Linux' " Linux
-        else " windows
-        endif
-        set guifont=Courier_New:h10::cDEFAULT
-        " set guifontwide=KaiTi:h12 " 宽字体
+    if exists('Consolas')
+        set guifont=Consolas:h10
+    elseif exists('Courier_New')
+        set guifont=Courier_New:h10
     endif
-" }}}
+"
 
-
-" Editting {{{
+" Editting
     set expandtab       " replace tab with spaces
     set autoindent
     set tabstop=4
@@ -64,7 +56,7 @@ endif
     set incsearch   " Highlight dynamically as pattern is typed
     set ignorecase  " Ignore case of searches
     set smartcase   " override the 'ignorecase' option if search pattern has upper case
-" }}}
+"
 
 syntax on
 
@@ -80,17 +72,22 @@ endif
 " ----------------------------------------------------------------------------
 " GUI
 " ----------------------------------------------------------------------------
-" Use the Solarized Dark theme
-set background=dark
-colorscheme solarized
-let g:solarized_termtrans=1
+try
+    " Use the Solarized Dark theme
+    colorscheme solarized
+    set background=dark
+    let g:solarized_termtrans=1
+catch /^Vim\%((\a\+)\)\=:E185/
+    " use default color scheme
+    colorscheme default
+    set background=light
+endtry
 
-" Termimal UI {{{
+" Termimal UI
     set number      " Enable line numbers
     set cursorline  " Highlight current line
     " (list + listchars) shows “invisible” characters
-    set list
-    set listchars=tab:>-,trail:-
+    set list listchars=tab:>-,trail:-
     set showmatch   " show matching brackets/braces/parantheses
 
     set laststatus=2 " Always show status line
@@ -106,31 +103,23 @@ let g:solarized_termtrans=1
     set title       " Show the filename in the window titlebar
     set showcmd     " Show the (partial) command as it’s being typed
     set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
-    " Use relative line numbers
-    if exists("&relativenumber")
-        set relativenumber
-        au BufReadPost * set relativenumber
-    endif
+    set relativenumber " Use relative line numbers
 
     set scrolloff=3 " Start scrolling three lines before the horizontal window border
-" }}}
+    set fdm=syntax " folds are defined by syntax highlighting
+"
 
 if has("gui_running")
     set go+=m  " hide menu bar from guioptions
     set go-=T  " hide toolbar from guioptions
 
-    " set page size
-    set lines=60
-    " since line number is on, add numberwidth to 100.
-    let &columns=100+&numberwidth
+    set lines=60 " set page size
+    let &columns=100+&numberwidth " since line number is on, add numberwidth to 100.
 
     if !has("nvim")
-        menu C&ustom.VIM\ &Note :e ~/Dropbox/tools/vim/vimrcs/vim.md<CR>
+        menu C&ustom.VIM\ &Note :e ~/Dropbox/tools/vim/vim.md<CR>
         menu C&ustom.-sep1- <Nop>
         menu C&ustom.MYVIMRC        :e $MYVIMRC<CR>
-        menu C&ustom.VIMRC_mapkey  :e ~/Dropbox/tools/vim/vimrcs/_vimrc_mapkey<CR>
-        menu C&ustom.VIMRC_editing :e ~/Dropbox/tools/vim/vimrcs/_vimrc_editing<CR>
-        menu C&ustom.VIMRC_vundle  :e ~/Dropbox/tools/vim/vimrcs/_vimrc_vundle_plugins<CR>
         " menu C&ustom.-sep2- <Nop>
     endif
 endif
@@ -202,7 +191,6 @@ imap <C-tab> <ESC>:tabnext<cr>i
 nmap <C-t> :tabnew<cr>
 map  <C-t> :tabnew<cr>
 imap <C-t> <ESC>:tabnew<cr>i
-
 
 " Strip trailing whitespace (,ss)
 function! FormatCleanup()
