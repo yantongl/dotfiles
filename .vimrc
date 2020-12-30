@@ -4,13 +4,15 @@
 set nocompatible " be iMproved,  required
 filetype off     " required
 
+let os=substitute(system('uname'), '\n', '', '')
+let isNeovim = has('nvim')
 
 " ----------------------------------------------------------------------------
 " EDITING
 " ----------------------------------------------------------------------------
 
 " Get the defaults that most users want.
-if !has("nvim")
+if isNeovim == 0
     source $VIMRUNTIME/defaults.vim
 endif
 
@@ -21,6 +23,7 @@ endif
     set backspace=indent,eol,start " Allow backspace in insert mode
     set ttyfast             " Optimize for fast terminal connections
     set gdefault            " Add the g flag to search/replace by default
+    set encoding=utf-8 nobomb " Use UTF-8 without BOM
     let mapleader=","       " Change mapleader
 
     " Centralize backups, swapfiles and undo history
@@ -32,12 +35,6 @@ endif
 "
 
 " Set font and encoding
-    set encoding=utf-8 nobomb " Use UTF-8 without BOM
-    if exists('Consolas')
-        set guifont=Consolas:h10
-    elseif exists('Courier_New')
-        set guifont=Courier_New:h10
-    endif
 "
 
 " Editting
@@ -72,20 +69,16 @@ endif
 " ----------------------------------------------------------------------------
 " GUI
 " ----------------------------------------------------------------------------
-try
-    " Use the Solarized Dark theme
-    colorscheme solarized
-    set background=dark
-    let g:solarized_termtrans=1
-catch /^Vim\%((\a\+)\)\=:E185/
-    " use default color scheme
-    colorscheme default
-    set background=light
-endtry
-
 " Termimal UI
+    set guifont=Consolas:h10,Courier_New:h10
     set number      " Enable line numbers
-    set cursorline  " Highlight current line
+    if version == 800
+        " VIM 8.0 had a bug so that cursorline and relativenumber are unusable
+        set nocul nornu
+    else
+        set cursorline  " Highlight current line
+        set relativenumber " Use relative line numbers
+    endif
     " (list + listchars) shows “invisible” characters
     set list listchars=tab:>-,trail:-
     set showmatch   " show matching brackets/braces/parantheses
@@ -103,7 +96,6 @@ endtry
     set title       " Show the filename in the window titlebar
     set showcmd     " Show the (partial) command as it’s being typed
     set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
-    set relativenumber " Use relative line numbers
 
     set scrolloff=3 " Start scrolling three lines before the horizontal window border
     set fdm=syntax " folds are defined by syntax highlighting
@@ -116,12 +108,10 @@ if has("gui_running")
     set lines=60 " set page size
     let &columns=100+&numberwidth " since line number is on, add numberwidth to 100.
 
-    if !has("nvim")
-        menu C&ustom.VIM\ &Note :e ~/Dropbox/tools/vim/vim.md<CR>
-        menu C&ustom.-sep1- <Nop>
-        menu C&ustom.MYVIMRC        :e $MYVIMRC<CR>
-        " menu C&ustom.-sep2- <Nop>
-    endif
+    menu C&ustom.VIM\ &Note :e ~/Dropbox/tools/vim/vim.md<CR>
+    menu C&ustom.-sep1- <Nop>
+    menu C&ustom.MYVIMRC        :e $MYVIMRC<CR>
+    " menu C&ustom.-sep2- <Nop>
 endif
 
 filetype plugin indent on " load file type plugins + indentation
