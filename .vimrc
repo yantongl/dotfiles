@@ -5,7 +5,40 @@ set nocompatible " be iMproved,  required
 filetype off     " required
 
 let os=substitute(system('uname'), '\n', '', '')
-let isNeovim = has('nvim')
+let isNeovim=has('nvim')
+
+let VimDir="$HOME/.vim"
+if has("win32") || has('win64')
+    let VimDir="$HOME/vimfiles"
+endif
+
+let &rtp .= ',' . expand(VimDir . "/bundle/Vundle.vim")
+let &backupdir=expand(VimDir . "/backups")
+let &directory=expand(VimDir . "/swaps")
+let &undodir=expand(VimDir . "/undo")
+
+" -----------------------------------------------------------------------------
+" Vundle plugins
+" -----------------------------------------------------------------------------
+" set the runtime path to include Vundle and initialize
+call vundle#begin(expand(VimDir . "/bundle"))
+    Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
+    Plugin 'tpope/vim-fugitive' " plugin on GitHub repo
+    Plugin 'preservim/nerdtree' " file system explorer
+    Plugin 'ctrlpvim/ctrlp.vim' " full path fuzzy file/buffer/mru/tag finder
+    Plugin 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
+    Plugin 'vim-airline/vim-airline'    " status bar
+    Plugin 'vim-airline/vim-airline-themes'
+    Plugin 'preservim/tagbar'   " tag list
+"    Plugin 'ycm-core/YouCompleteMe' " fuzzy-search code completion
+call vundle#end()            " required
+filetype plugin indent on    " required
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+" see :h vundle for more details or wiki for FAQ
 
 " ----------------------------------------------------------------------------
 " EDITING
@@ -25,16 +58,6 @@ endif
     set gdefault            " Add the g flag to search/replace by default
     set encoding=utf-8 nobomb " Use UTF-8 without BOM
     let mapleader=","       " Change mapleader
-
-    " Centralize backups, swapfiles and undo history
-    set backupdir=~/.vim/backups
-    set directory=~/.vim/swaps
-    if exists("&undodir")
-        set undodir=~/.vim/undo
-    endif
-"
-
-" Set font and encoding
 "
 
 " Editting
@@ -55,7 +78,6 @@ endif
     set smartcase   " override the 'ignorecase' option if search pattern has upper case
 "
 
-syntax on
 
 " Automatic commands
 if has("autocmd")
@@ -95,12 +117,23 @@ endif
     set showmode    " Show the current mode
     set title       " Show the filename in the window titlebar
     set showcmd     " Show the (partial) command as it’s being typed
-    set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
+    "set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
 
-    set scrolloff=3 " Start scrolling three lines before the horizontal window border
+    syntax enable
+    if has('gui_running')
+        let g:solarized_termcolors=256
+        set background=dark
+        colorscheme solarized
+        " colorscheme monokai
+    else
+        colorscheme monokai
+    endif
+
     set fdm=syntax " folds are defined by syntax highlighting
+    set scrolloff=3 " Start scrolling three lines before the horizontal window border
 "
 
+" GUI menu settings
 if has("gui_running")
     set go+=m  " hide menu bar from guioptions
     set go-=T  " hide toolbar from guioptions
@@ -114,7 +147,6 @@ if has("gui_running")
     " menu C&ustom.-sep2- <Nop>
 endif
 
-filetype plugin indent on " load file type plugins + indentation
 
 
 
