@@ -6,6 +6,7 @@ filetype off     " required
 
 let os=substitute(system('uname'), '\n', '', '')
 let isNeovim=has('nvim')
+let isNvimQt=has('nvim') && exists('g:GuiLoaded')
 
 let VimDir="$HOME/.vim"
 if has("win32") || has('win64')
@@ -25,12 +26,18 @@ call vundle#begin(expand(VimDir . "/bundle"))
     Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
     Plugin 'tpope/vim-fugitive' " plugin on GitHub repo
     Plugin 'preservim/nerdtree' " file system explorer
-    Plugin 'ctrlpvim/ctrlp.vim' " full path fuzzy file/buffer/mru/tag finder
-    Plugin 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
+    Plugin 'mg979/vim-visual-multi' " multiple cursor
     Plugin 'vim-airline/vim-airline'    " status bar
     Plugin 'vim-airline/vim-airline-themes'
     Plugin 'preservim/tagbar'   " tag list
-"    Plugin 'ycm-core/YouCompleteMe' " fuzzy-search code completion
+    " Fuzzy file finder
+    Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plugin 'junegunn/fzf.vim'
+    " Plugin 'ycm-core/YouCompleteMe' " fuzzy-search code completion
+
+    " colorscheme
+    Plugin 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
+    Plugin 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
 call vundle#end()            " required
 filetype plugin indent on    " required
 " Brief help
@@ -51,6 +58,7 @@ endif
 
 " VIM system settings
     set clipboard=unnamed   " Use the OS clipboard by default
+    set clipboard+=unnamedplus " neovim use this to use the OS clipboard
     set wildmenu            " Enhance command-line completion
     set wildmode=longest,list,full
     set backspace=indent,eol,start " Allow backspace in insert mode
@@ -92,17 +100,18 @@ endif
 " GUI
 " ----------------------------------------------------------------------------
 " Termimal UI
+if isNvimQt == 0
     set guifont=Consolas:h10,Courier_New:h10
+else
+    GuiFont! Consolas:h11
+endif
     set number      " Enable line numbers
-    if version == 800
-        " VIM 8.0 had a bug so that cursorline and relativenumber are unusable
-        set nocul nornu
-    else
-        set cursorline  " Highlight current line
-        set relativenumber " Use relative line numbers
-    endif
-    " (list + listchars) shows “invisible” characters
-    set list listchars=tab:>-,trail:-
+    set cursorline  " Highlight current line
+    set relativenumber " Use relative line numbers
+    "if version == 800 " VIM 8.0 had a bug so that cursorline and relativenumber are unusable
+    "    set nocul nornu
+    "endif
+    set list listchars=tab:>-,trail:-   " (list + listchars) shows “invisible” characters
     set showmatch   " show matching brackets/braces/parantheses
 
     set laststatus=2 " Always show status line
@@ -120,13 +129,14 @@ endif
     "set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
 
     syntax enable
-    if has('gui_running')
+    if has('gui_running') || isNeovim
         let g:solarized_termcolors=256
         set background=dark
-        colorscheme solarized
+        " colorscheme solarized
         " colorscheme monokai
+        colorscheme codedark
     else
-        colorscheme monokai
+        colorscheme molokai
     endif
 
     set fdm=syntax " folds are defined by syntax highlighting
@@ -214,6 +224,8 @@ nmap <C-t> :tabnew<cr>
 map  <C-t> :tabnew<cr>
 imap <C-t> <ESC>:tabnew<cr>i
 
+nnoremap <C-p> :FZF<cr>
+
 " Strip trailing whitespace (,ss)
 function! FormatCleanup()
     " Strip whitespaces
@@ -228,4 +240,16 @@ function! FormatCleanup()
     :%s/\r//ge   " replace DOS line-end characters to UNIX line-end
 endfunction
 noremap <leader>ss :call FormatCleanup()<CR>
+
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 
