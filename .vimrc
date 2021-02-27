@@ -35,6 +35,10 @@ call vundle#begin(expand(VimDir . "/bundle"))
     Plugin 'junegunn/fzf.vim'
     " Plugin 'ycm-core/YouCompleteMe' " fuzzy-search code completion
 
+    " coc which includes LSP
+    Plugin 'neoclide/coc.nvim', {'breanch': 'release'}
+    Plugin 'jackguo380/vim-lsp-cxx-highlight'
+
     " colorscheme
     Plugin 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
     Plugin 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
@@ -126,7 +130,7 @@ endif
     set showmode    " Show the current mode
     set title       " Show the filename in the window titlebar
     set showcmd     " Show the (partial) command as it’s being typed
-    "set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
+    set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
 
     syntax enable
     if has('gui_running') || isNeovim
@@ -139,7 +143,9 @@ endif
         colorscheme molokai
     endif
 
-    set fdm=syntax " folds are defined by syntax highlighting
+    " manual folding has a lot more flexibility. Seems better than syntax
+    " set fdm=syntax " folds are defined by syntax highlighting
+
     set scrolloff=3 " Start scrolling three lines before the horizontal window border
 "
 
@@ -189,21 +195,34 @@ map <F2> :w<CR>
 imap <F2> <ESC>:w<CR>li
 " set F3 as delete buffer (not tab/window)
 map <F3> :bd<CR>
-imap <F3> <ESC>:bd<CR>li
+imap <F3> <ESC>:bd<CR>
 " set F4 as save and quit
-map <F4> :wq<CR>
-imap <F4> <ESC>:wq<CR>li
+map <F4> :x<CR>
+imap <F4> <ESC>:x<CR>
 
 " set <F5> to refresh vimrc
 map <F5> :so $MYVIMRC<CR>
 imap <F5> <ESC>:so $MYVIMRC<CR>li
+function! OpenRealVimrc()
+    if filereadable("T:/github/dotfiles/.vimrc")
+       :e T:/github/dotfiles/.vimrc
+    else
+       :e $HOME/github/dotfiles/.vimrc
+    endif
+endfunction
+map <F6> :call OpenRealVimrc()<CR>
+imap <F6> <ESC>:call OpenRealVimrc()<CR>
 
+" <F7>: run current python file
 map <F7> :!python %<CR>
 imap <F7> <ESC>:w<CR>:!python %<CR>
 
-" set <F10> to retab
 map <F10> :retab<CR>
 imap <F10> <ESC>:retab<CR>li
+map <F11> :TagbarForceUpdate<CR>
+imap <F11> <ESC>:TagbarForceUpdate<CR>li
+map <F12> :TagbarToggle<CR>
+imap <F12> <ESC>:TagbarToggle<CR>li
 
 " CTRL-A is Select all
 noremap <C-A> gggH<C-O>G
@@ -226,6 +245,18 @@ imap <C-t> <ESC>:tabnew<cr>i
 
 nnoremap <C-p> :FZF<cr>
 
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
+
 " Strip trailing whitespace (,ss)
 function! FormatCleanup()
     " Strip whitespaces
@@ -241,15 +272,28 @@ function! FormatCleanup()
 endfunction
 noremap <leader>ss :call FormatCleanup()<CR>
 
-" " Copy to clipboard
-vnoremap  <leader>y  "+y
-nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>y  "+y
-nnoremap  <leader>yy  "+yy
+" ------------------------------------------------------------------------------
+" Plugin configurations
+" ------------------------------------------------------------------------------
+"
+"""  Tagbar
+" to display tags ordered by heading on markdown files
+let g:tagbar_type_markdown = {
+  \ 'ctagstype' : 'markdown',
+  \ 'kinds'     : [ 
+  \     'c:chapter:0:1', 
+  \     's:section:0:1', 'S:subsection:0:1', 't:subsubsection:0:1',
+  \     'T:l4subsection:0:1', 'u:l5subsection:0:1',
+  \ ],
+  \ 'sro'           : '""',
+  \ 'kind2scope'    : { 
+  \     'c' : 'chapter', 's' : 'section', 'S' : 'subsection', 't' : 'subsubsection', 'T' : 'l4subsection',
+  \ },
+  \ 'scope2kind'    : {
+  \     'chapter' : 'c', 'section' : 's', 'subsection' : 'S', 'subsubsection' : 't', 'l4subsection' : 'T',
+  \ },
+\ }
 
-" " Paste from clipboard
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-vnoremap <leader>p "+p
-vnoremap <leader>P "+P
+""" enable highlight current symbol on `CursorHold`
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
