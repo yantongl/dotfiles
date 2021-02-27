@@ -79,7 +79,7 @@ endif
     set shiftwidth=4    " # of spaces to use for each step of (auto)indent
     set softtabstop=4   " # of spaces that a tab counts for while performing editing
     set textwidth=100   " maximum width of a line. Longer line will be broken into lines.
-    set colorcolumn=+1  " highlight column after textwidth
+    set colorcolumn=+1,+21,-19  " highlight column after textwidth
 
     set backspace=indent,eol,start  " make backspace work like most other apps
 
@@ -133,38 +133,18 @@ endif
     set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
 
     syntax enable
-    if has('gui_running') || isNeovim
-        let g:solarized_termcolors=256
-        set background=dark
-        " colorscheme solarized
-        " colorscheme monokai
-        colorscheme codedark
-    else
-        colorscheme molokai
-    endif
+    " let g:solarized_termcolors=256
+    " set background=dark
+    " colorscheme solarized
+    " colorscheme monokai
+    colorscheme codedark
+    " colorscheme molokai
 
     " manual folding has a lot more flexibility. Seems better than syntax
     " set fdm=syntax " folds are defined by syntax highlighting
 
-    set scrolloff=3 " Start scrolling three lines before the horizontal window border
+    set scrolloff=3 " minimal number of screen lines to keep above and below the cursor 
 "
-
-" GUI menu settings
-if has("gui_running")
-    set go+=m  " hide menu bar from guioptions
-    set go-=T  " hide toolbar from guioptions
-
-    set lines=60 " set page size
-    let &columns=100+&numberwidth " since line number is on, add numberwidth to 100.
-
-    menu C&ustom.VIM\ &Note :e ~/Dropbox/tools/vim/vim.md<CR>
-    menu C&ustom.-sep1- <Nop>
-    menu C&ustom.MYVIMRC        :e $MYVIMRC<CR>
-    " menu C&ustom.-sep2- <Nop>
-endif
-
-
-
 
 " ----------------------------------------------------------------------------
 " MAP KEY
@@ -296,4 +276,18 @@ let g:tagbar_type_markdown = {
 
 """ enable highlight current symbol on `CursorHold`
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" --------------------------------------------------------------
+""" FZF
+" --------------------------------------------------------------
+
+" actions to take when press keys in search
+let g:fzf_action = { 'ctrl-t': 'tab split', 'ctrl-x': 'split',  'ctrl-v': 'vsplit' }
+
+map <leader>f :Files<CR>
+map <leader>b :Buffers<CR>
+
+" customize :Files command to show preview with `bat`
+command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--preview', 'bat --color=always --style=numbers {}']}, <bang>0)
+
 
