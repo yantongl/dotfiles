@@ -8,47 +8,41 @@ let os=substitute(system('uname'), '\n', '', '')
 let isNeovim=has('nvim')
 let isNvimQt=has('nvim') && exists('g:GuiLoaded')
 
-let VimDir="$HOME/.vim"
-if has("win32") || has('win64')
-    let VimDir="$HOME/vimfiles"
-endif
-
-let &rtp .= ',' . expand(VimDir . "/bundle/Vundle.vim")
-let &backupdir=expand(VimDir . "/backups")
-let &directory=expand(VimDir . "/swaps")
-let &undodir=expand(VimDir . "/undo")
-
 " -----------------------------------------------------------------------------
-" Vundle plugins
+" vim-plug plugins
 " -----------------------------------------------------------------------------
-" set the runtime path to include Vundle and initialize
-call vundle#begin(expand(VimDir . "/bundle"))
-    Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
-    Plugin 'tpope/vim-fugitive' " plugin on GitHub repo
-    Plugin 'preservim/nerdtree' " file system explorer
-    Plugin 'mg979/vim-visual-multi' " multiple cursor
-    Plugin 'vim-airline/vim-airline'    " status bar
-    Plugin 'vim-airline/vim-airline-themes'
-    Plugin 'preservim/tagbar'   " tag list
+call plug#begin(stdpath('data') . '/plugged')
+    " Make sure you use single quotes
+
+    Plug 'tpope/vim-fugitive' " plugin on GitHub repo
+    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " file system explorer
+    Plug 'mg979/vim-visual-multi' " multiple cursor
+    Plug 'vim-airline/vim-airline'    " status bar
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'preservim/tagbar'   " tag list
+
     " Fuzzy file finder
-    Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plugin 'junegunn/fzf.vim'
-    " Plugin 'ycm-core/YouCompleteMe' " fuzzy-search code completion
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+    " Plug 'ycm-core/YouCompleteMe' " fuzzy-search code completion
+
+    " Syntax highlight
+    Plug 'PProvost/vim-ps1'
 
     " coc which includes LSP
-    Plugin 'neoclide/coc.nvim', {'breanch': 'release'}
-    Plugin 'jackguo380/vim-lsp-cxx-highlight'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'jackguo380/vim-lsp-cxx-highlight'
 
     " colorscheme
-    Plugin 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
-    Plugin 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
-call vundle#end()            " required
-filetype plugin indent on    " required
+    Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
+    Plug 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
+call plug#end()            " required
 " Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+" :PlugInstall      - installs plugins
+" :PlugUpdate       - install or update plugins
+" :PlugUpgrade      - upgrade vim-plug itself
+" :PlugStatus       - check the status of plugins
+" :PlugClean        - remove unlisted plugins
 " see :h vundle for more details or wiki for FAQ
 
 " ----------------------------------------------------------------------------
@@ -70,6 +64,9 @@ endif
     set gdefault            " Add the g flag to search/replace by default
     set encoding=utf-8 nobomb " Use UTF-8 without BOM
     let mapleader=","       " Change mapleader
+    set nobackup
+    set noswapfile
+    set noundofile
 "
 
 " Editting
@@ -98,6 +95,7 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+    autocmd BufNewFile,BufRead *.ps1 setlocal filetype=ps1
 endif
 
 " ----------------------------------------------------------------------------
@@ -143,7 +141,7 @@ endif
     " manual folding has a lot more flexibility. Seems better than syntax
     " set fdm=syntax " folds are defined by syntax highlighting
 
-    set scrolloff=3 " minimal number of screen lines to keep above and below the cursor 
+    set scrolloff=3 " minimal number of screen lines to keep above and below the cursor
 "
 
 " ----------------------------------------------------------------------------
@@ -260,13 +258,13 @@ noremap <leader>ss :call FormatCleanup()<CR>
 " to display tags ordered by heading on markdown files
 let g:tagbar_type_markdown = {
   \ 'ctagstype' : 'markdown',
-  \ 'kinds'     : [ 
-  \     'c:chapter:0:1', 
+  \ 'kinds'     : [
+  \     'c:chapter:0:1',
   \     's:section:0:1', 'S:subsection:0:1', 't:subsubsection:0:1',
   \     'T:l4subsection:0:1', 'u:l5subsection:0:1',
   \ ],
   \ 'sro'           : '""',
-  \ 'kind2scope'    : { 
+  \ 'kind2scope'    : {
   \     'c' : 'chapter', 's' : 'section', 'S' : 'subsection', 't' : 'subsubsection', 'T' : 'l4subsection',
   \ },
   \ 'scope2kind'    : {
