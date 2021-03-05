@@ -8,51 +8,9 @@ let os=substitute(system('uname'), '\n', '', '')
 let isNeovim=has('nvim')
 let isNvimQt=has('nvim') && exists('g:GuiLoaded')
 
-" -----------------------------------------------------------------------------
-" vim-plug plugins
-" -----------------------------------------------------------------------------
-call plug#begin(stdpath('data') . '/plugged')
-    " Make sure you use single quotes
-
-    Plug 'tpope/vim-fugitive' " plugin on GitHub repo
-    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " file system explorer
-    Plug 'mg979/vim-visual-multi' " multiple cursor
-    Plug 'vim-airline/vim-airline'    " status bar
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'preservim/tagbar'   " tag list
-
-    " Fuzzy file finder
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-    " Plug 'ycm-core/YouCompleteMe' " fuzzy-search code completion
-
-    " Syntax highlight
-    Plug 'PProvost/vim-ps1'
-
-    " coc which includes LSP
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'jackguo380/vim-lsp-cxx-highlight'
-
-    " colorscheme
-    Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
-    Plug 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
-call plug#end()            " required
-" Brief help
-" :PlugInstall      - installs plugins
-" :PlugUpdate       - install or update plugins
-" :PlugUpgrade      - upgrade vim-plug itself
-" :PlugStatus       - check the status of plugins
-" :PlugClean        - remove unlisted plugins
-" see :h vundle for more details or wiki for FAQ
-
 " ----------------------------------------------------------------------------
 " EDITING
 " ----------------------------------------------------------------------------
-
-" Get the defaults that most users want.
-if isNeovim == 0
-    source $VIMRUNTIME/defaults.vim
-endif
 
 " VIM system settings
     set clipboard=unnamed   " Use the OS clipboard by default
@@ -110,15 +68,11 @@ endif
     set number      " Enable line numbers
     set cursorline  " Highlight current line
     set relativenumber " Use relative line numbers
-    "if version == 800 " VIM 8.0 had a bug so that cursorline and relativenumber are unusable
-    "    set nocul nornu
-    "endif
     set list listchars=tab:>-,trail:-   " (list + listchars) shows “invisible” characters
     set showmatch   " show matching brackets/braces/parantheses
 
     set laststatus=2 " Always show status line
     set mouse=a     " Enable mouse in all modes
-    " set noerrorbells " Disable error bells
     set errorbells
     set visualbell  " silence the bell, use a flash instead
     set nostartofline " Don’t reset cursor to start of line when moving around.
@@ -128,20 +82,10 @@ endif
     set showmode    " Show the current mode
     set title       " Show the filename in the window titlebar
     set showcmd     " Show the (partial) command as it’s being typed
-    set statusline=%<%F%h%m%r[%{&fileencoding?&fileencoding:&encoding}]%=\[%B\]\%l,%c%V\ %P
+    set scrolloff=3 " minimal number of screen lines to keep above and below the cursor
+
 
     syntax enable
-    " let g:solarized_termcolors=256
-    " set background=dark
-    " colorscheme solarized
-    " colorscheme monokai
-    colorscheme codedark
-    " colorscheme molokai
-
-    " manual folding has a lot more flexibility. Seems better than syntax
-    " set fdm=syntax " folds are defined by syntax highlighting
-
-    set scrolloff=3 " minimal number of screen lines to keep above and below the cursor
 "
 
 " ----------------------------------------------------------------------------
@@ -185,7 +129,7 @@ function! OpenRealVimrc()
     if filereadable("T:/github/dotfiles/.vimrc")
        :e T:/github/dotfiles/.vimrc
     else
-       :e $HOME/github/dotfiles/.vimrc
+       :e $HOME/Desktop/GitHub/dotfiles/.vimrc
     endif
 endfunction
 map <F6> :call OpenRealVimrc()<CR>
@@ -250,10 +194,44 @@ function! FormatCleanup()
 endfunction
 noremap <leader>ss :call FormatCleanup()<CR>
 
+" -----------------------------------------------------------------------------
+" vim-plug plugins
+" -----------------------------------------------------------------------------
+call plug#begin(stdpath('data') . '/plugged')
+    " Make sure you use single quotes
+
+    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " file system explorer
+    Plug 'vim-airline/vim-airline'    " status bar
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'preservim/tagbar'   " tag list
+
+    " Fuzzy file finder
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+
+    " Syntax highlight
+    Plug 'PProvost/vim-ps1'
+
+    " colorscheme
+    Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
+    Plug 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
+call plug#end()            " required
+" Brief help
+" :PlugInstall      - installs plugins
+" :PlugUpdate       - install or update plugins
+" :PlugUpgrade      - upgrade vim-plug itself
+" :PlugStatus       - check the status of plugins
+" :PlugClean        - remove unlisted plugins
+" see :h vundle for more details or wiki for FAQ
+
+
 " ------------------------------------------------------------------------------
 " Plugin configurations
 " ------------------------------------------------------------------------------
-"
+
+" colorscheme must be set after plug configuration
+colorscheme codedark
+
 """  Tagbar
 " to display tags ordered by heading on markdown files
 let g:tagbar_type_markdown = {
@@ -272,8 +250,6 @@ let g:tagbar_type_markdown = {
   \ },
 \ }
 
-""" enable highlight current symbol on `CursorHold`
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " --------------------------------------------------------------
 """ FZF
