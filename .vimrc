@@ -8,6 +8,45 @@ let os=substitute(system('uname'), '\n', '', '')
 let isNeovim=has('nvim')
 let isNvimQt=has('nvim') && exists('g:GuiLoaded')
 
+" -----------------------------------------------------------------------------
+" vim-plug plugins
+" -----------------------------------------------------------------------------
+call plug#begin(stdpath('data') . '/plugged')
+    " Make sure you use single quotes
+
+    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " file system explorer
+    Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }   " tag list
+    Plug 'tpope/vim-fugitive'   " git plugin
+
+    " Plug 'vim-airline/vim-airline'    " status bar
+    " Plug 'vim-airline/vim-airline-themes'
+    Plug 'itchyny/lightline.vim' " faster statusline colorschemes
+    Plug 'mengelbrecht/lightline-bufferline'  " bufferline solorschemes
+
+    " Fuzzy file finder
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+
+    " Syntax highlight
+    Plug 'PProvost/vim-ps1'
+
+    if has('nvim-0.5')
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        Plug 'neovim/nvim-lspconfig'
+    endif
+
+    " colorscheme
+    Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
+    Plug 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
+call plug#end()            " required
+" Brief help
+" :PlugInstall      - installs plugins
+" :PlugUpdate       - install or update plugins
+" :PlugUpgrade      - upgrade vim-plug itself
+" :PlugStatus       - check the status of plugins
+" :PlugClean        - remove unlisted plugins
+" see :h vundle for more details or wiki for FAQ
+
 " ----------------------------------------------------------------------------
 " EDITING
 " ----------------------------------------------------------------------------
@@ -25,6 +64,9 @@ let isNvimQt=has('nvim') && exists('g:GuiLoaded')
     set nobackup
     set noswapfile
     set noundofile
+
+    au FocusGained * :checktime  " when regain focus, check if any buffer were changed outside.
+    set autoread    " auto reload a file if it is detected to have been changed outside.
 "
 
 " Editting
@@ -35,6 +77,12 @@ let isNvimQt=has('nvim') && exists('g:GuiLoaded')
     set softtabstop=4   " # of spaces that a tab counts for while performing editing
     set textwidth=100   " maximum width of a line. Longer line will be broken into lines.
     set colorcolumn=+1,+21,-19  " highlight column after textwidth
+
+    " colorscheme must be set after plug configuration
+    colorscheme codedark
+
+    " hi ColorColumn ctermbg=lightgrey guibg=red
+    hi ColorColumn guibg=red
 
     set backspace=indent,eol,start  " make backspace work like most other apps
 
@@ -50,20 +98,20 @@ let isNvimQt=has('nvim') && exists('g:GuiLoaded')
 if has("autocmd")
     filetype on " Enable file type detection
     " Treat .json files as .js
-    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+    autocmd BufNewFile,BufRead *.json   setfiletype json syntax=javascript
     " Treat .md files as Markdown
-    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-    autocmd BufNewFile,BufRead *.ps1 setlocal filetype=ps1
+    autocmd BufNewFile,BufRead *.md     setlocal filetype=markdown
+    autocmd BufNewFile,BufRead *.ps1    setlocal filetype=ps1
 endif
 
 " ----------------------------------------------------------------------------
 " GUI
 " ----------------------------------------------------------------------------
 " Termimal UI
-if isNvimQt == 0
-    set guifont=Consolas:h10,Courier_New:h10
-else
+if exists('g:GuiLoaded')
     GuiFont! Consolas:h11
+else
+    set guifont=Consolas:h11,Courier_New:h10
 endif
     set number      " Enable line numbers
     set cursorline  " Highlight current line
@@ -71,6 +119,7 @@ endif
     set list listchars=tab:>-,trail:-   " (list + listchars) shows “invisible” characters
     set showmatch   " show matching brackets/braces/parantheses
 
+    set showtabline=2   " Always show tabline
     set laststatus=2 " Always show status line
     set mouse=a     " Enable mouse in all modes
     set errorbells
@@ -136,8 +185,8 @@ map <F6> :call OpenRealVimrc()<CR>
 imap <F6> <ESC>:call OpenRealVimrc()<CR>
 
 " <F7>: run current python file
-map <F7> :!python %<CR>
-imap <F7> <ESC>:w<CR>:!python %<CR>
+"map <F7> :!python %<CR>
+"imap <F7> <ESC>:w<CR>:!python %<CR>
 
 map <F10> :retab<CR>
 imap <F10> <ESC>:retab<CR>li
@@ -167,17 +216,6 @@ imap <C-t> <ESC>:tabnew<cr>i
 
 nnoremap <C-p> :FZF<cr>
 
-" " Copy to clipboard
-vnoremap  <leader>y  "+y
-nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>y  "+y
-nnoremap  <leader>yy  "+yy
-
-" " Paste from clipboard
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-vnoremap <leader>p "+p
-vnoremap <leader>P "+P
 
 " Strip trailing whitespace (,ss)
 function! FormatCleanup()
@@ -194,43 +232,10 @@ function! FormatCleanup()
 endfunction
 noremap <leader>ss :call FormatCleanup()<CR>
 
-" -----------------------------------------------------------------------------
-" vim-plug plugins
-" -----------------------------------------------------------------------------
-call plug#begin(stdpath('data') . '/plugged')
-    " Make sure you use single quotes
-
-    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " file system explorer
-    Plug 'vim-airline/vim-airline'    " status bar
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'preservim/tagbar'   " tag list
-
-    " Fuzzy file finder
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-
-    " Syntax highlight
-    Plug 'PProvost/vim-ps1'
-
-    " colorscheme
-    Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
-    Plug 'flazz/vim-colorschemes' " one stop shop for vim colorschemes
-call plug#end()            " required
-" Brief help
-" :PlugInstall      - installs plugins
-" :PlugUpdate       - install or update plugins
-" :PlugUpgrade      - upgrade vim-plug itself
-" :PlugStatus       - check the status of plugins
-" :PlugClean        - remove unlisted plugins
-" see :h vundle for more details or wiki for FAQ
-
 
 " ------------------------------------------------------------------------------
 " Plugin configurations
 " ------------------------------------------------------------------------------
-
-" colorscheme must be set after plug configuration
-colorscheme codedark
 
 """  Tagbar
 " to display tags ordered by heading on markdown files
@@ -264,4 +269,64 @@ map <leader>b :Buffers<CR>
 " customize :Files command to show preview with `bat`
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--preview', 'bat --color=always --style=numbers {}']}, <bang>0)
 
+" -----------------------------------------------------------------
+" lightline config
+" -----------------------------------------------------------------
+"  add gitbranch to left statusline, buffer list to tabline
+let g:lightline = {
+    \   'active': {
+    \     'left':[ ['mode', 'paste'],  ['gitbranch', 'readonly', 'filename', 'modified'] ],
+    \   },
+    \   'component_expand': { 'buffers': 'lightline#bufferline#buffers' },
+    \   'component_type': { 'buffers': 'tabsel' },
+    \   'component_function': { 'gitbranch': 'fugitive#head' },
+    \   'tabline': { 'left': [['buffers']], 'right': [['close']] }
+    \ }
+
+let g:lightline.colorscheme = 'darcula'
+" show bufferline index number
+let g:lightline#bufferline#show_number=2
+let g:lightline#bufferline#filename_modifier = ':t' " hide filepath, only show filename
+" with neovim 'tablineat' feature, this allow mouse to click bufferline to switch
+if has('tablineat')
+    let g:lightline.component_raw = {'buffers': 1}
+    let g:lightline#bufferline#clickable=1
+endif
+
+autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
+
+" hotkey to switch to buffer using their ordinal number in the bufferline
+nmap <C-1> <Plug>lightline#bufferline#go(1)
+nmap <C-2> <Plug>lightline#bufferline#go(2)
+nmap <C-3> <Plug>lightline#bufferline#go(3)
+nmap <C-4> <Plug>lightline#bufferline#go(4)
+nmap <C-5> <Plug>lightline#bufferline#go(5)
+nmap <C-6> <Plug>lightline#bufferline#go(6)
+nmap <C-7> <Plug>lightline#bufferline#go(7)
+nmap <C-8> <Plug>lightline#bufferline#go(8)
+nmap <C-9> <Plug>lightline#bufferline#go(9)
+nmap <C-0> <Plug>lightline#bufferline#go(10)
+" mappings to delete buffers by their oridinal number
+nmap <A-1> <Plug>lightline#bufferline#delete(1)
+nmap <A-2> <Plug>lightline#bufferline#delete(2)
+nmap <A-3> <Plug>lightline#bufferline#delete(3)
+nmap <A-4> <Plug>lightline#bufferline#delete(4)
+nmap <A-5> <Plug>lightline#bufferline#delete(5)
+nmap <A-6> <Plug>lightline#bufferline#delete(6)
+nmap <A-7> <Plug>lightline#bufferline#delete(7)
+nmap <A-8> <Plug>lightline#bufferline#delete(8)
+nmap <A-9> <Plug>lightline#bufferline#delete(9)
+nmap <A-0> <Plug>lightline#bufferline#delete(10)
+
+" lua <<EOF
+" -------------------------------------------------------------------
+" -- Tree-Sitter config
+" -------------------------------------------------------------------
+" require 'nvim-treesitter.install'.compilers = { "clang", "cl" }
+" 
+" -------------------------------------------------------------------
+" -- LSP config
+" -------------------------------------------------------------------
+" require 'lspconfig'.pyright.setup{}
+" EOF
 
