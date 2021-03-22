@@ -11,7 +11,12 @@ let isNvimQt=has('nvim') && exists('g:GuiLoaded')
 " -----------------------------------------------------------------------------
 " vim-plug plugins
 " -----------------------------------------------------------------------------
-call plug#begin(stdpath('data') . '/plugged')
+if isNeovim==1
+    let plugpath=stdpath('data') . '/plugged'
+else
+    let plugpath=expand('~/vimfiles/plugged')
+endif
+call plug#begin(plugpath)
     " Make sure you use single quotes
 
     Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " file system explorer
@@ -110,6 +115,7 @@ endif
 " Termimal UI
 if exists('g:GuiLoaded')
     GuiFont! Consolas:h11
+    GuiTabline 0
 else
     set guifont=Consolas:h11,Courier_New:h10
 endif
@@ -175,11 +181,7 @@ imap <F4> <ESC>:x<CR>
 map <F5> :so $MYVIMRC<CR>
 imap <F5> <ESC>:so $MYVIMRC<CR>li
 function! OpenRealVimrc()
-    if filereadable("T:/github/dotfiles/.vimrc")
-       :e T:/github/dotfiles/.vimrc
-    else
-       :e $HOME/Desktop/GitHub/dotfiles/.vimrc
-    endif
+    e $MYVIMRC
 endfunction
 map <F6> :call OpenRealVimrc()<CR>
 imap <F6> <ESC>:call OpenRealVimrc()<CR>
@@ -318,6 +320,7 @@ nmap <A-8> <Plug>lightline#bufferline#delete(8)
 nmap <A-9> <Plug>lightline#bufferline#delete(9)
 nmap <A-0> <Plug>lightline#bufferline#delete(10)
 
+if has('nvim-0.5')
 " lua <<EOF
 " -------------------------------------------------------------------
 " -- Tree-Sitter config
@@ -329,4 +332,5 @@ nmap <A-0> <Plug>lightline#bufferline#delete(10)
 " -------------------------------------------------------------------
 " require 'lspconfig'.pyright.setup{}
 " EOF
+endif
 
