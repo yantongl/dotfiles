@@ -17,16 +17,16 @@ else
 endif
 
 if !filereadable(vimplug_exists)
-  if !executable('curl')
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
-  endif
-  echo "Installing Vim-Plug..."
-  echo ""
-  silent exec "!curl -fLo " . shellescape(vimplug_exists) . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  let g:not_finish_vimplug = "yes"
+    if !executable('curl')
+        echoerr "You have to install curl or first install vim-plug yourself!"
+        execute "q!"
+    endif
+    echo "Installing Vim-Plug..."
+    echo ""
+    silent exec "!curl -fLo " . shellescape(vimplug_exists) . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    let g:not_finish_vimplug = "yes"
 
-  autocmd VimEnter * PlugInstall
+    autocmd VimEnter * PlugInstall
 endif
 "-------- end vim-plug setup ----
 
@@ -53,14 +53,28 @@ call plug#begin(plugpath)
     Plug 'PProvost/vim-ps1'
 
     if has('nvim-0.5')
+        " tree-sitter
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        Plug 'nvim-treesitter/playground'
+        Plug 'JoosepAlviste/nvim-ts-context-commentstring' " comment based on the cursor location (require treesitter)
+
+        " LSP
         Plug 'neovim/nvim-lspconfig'
         Plug 'nvim-lua/completion-nvim'
+"        Plug 'kabouzeid/nvim-lspinstall'
+"        Plug 'anott03/nvim-lspinstall'
 
         " telescope
         Plug 'nvim-lua/popup.nvim'
         Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-telescope/telescope.nvim'
+
+        " auto complete
+        Plug 'hrsh7th/nvim-compe'
+
+        " file explorer
+        Plug 'kyazdani42/nvim-web-devicons' " for file icons
+        Plug 'kyazdani42/nvim-tree.lua'
     endif
 
     " colorscheme
@@ -73,6 +87,8 @@ call plug#begin(plugpath)
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " color highligher
     Plug 'norcalli/nvim-colorizer.lua'
+    " show indentation guides to all lines (including empty lines)
+    Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'} " only use lua branch before nvim0.5 is out
 call plug#end()            " required
 " Brief help
 " :PlugInstall      - installs plugins
@@ -110,10 +126,10 @@ call plug#end()            " required
     " Always show the signcolumn, otherwise it would shift the text each time
     " diagnostics appear/become resolved.
     if has("patch-8.1.1564")
-      " Recently vim can merge signcolumn and number column into one
-      set signcolumn=number
+        " Recently vim can merge signcolumn and number column into one
+        set signcolumn=number
     else
-      set signcolumn=yes
+        set signcolumn=yes
     endif
 
     au FocusGained * :checktime  " when regain focus, check if any buffer were changed outside.
@@ -185,6 +201,11 @@ endif
     set showcmd     " Show the (partial) command as it’s being typed
     set scrolloff=3 " minimal number of screen lines to keep above and below the cursor
 
+    if has('termguicolors')
+        " both nvim-colorizer and nvim-tree need termguicolors
+        set termguicolors " this variable must be enabled for colors to be applied properly
+    endif
+
 
     syntax enable
 "
@@ -250,19 +271,19 @@ noremap <leader>ss :call FormatCleanup()<CR>
 """  Tagbar
 " to display tags ordered by heading on markdown files
 let g:tagbar_type_markdown = {
-  \ 'ctagstype' : 'markdown',
-  \ 'kinds'     : [
-  \     'c:chapter:0:1',
-  \     's:section:0:1', 'S:subsection:0:1', 't:subsubsection:0:1',
-  \     'T:l4subsection:0:1', 'u:l5subsection:0:1',
-  \ ],
-  \ 'sro'           : '""',
-  \ 'kind2scope'    : {
-  \     'c' : 'chapter', 's' : 'section', 'S' : 'subsection', 't' : 'subsubsection', 'T' : 'l4subsection',
-  \ },
-  \ 'scope2kind'    : {
-  \     'chapter' : 'c', 'section' : 's', 'subsection' : 'S', 'subsubsection' : 't', 'l4subsection' : 'T',
-  \ },
+    \ 'ctagstype' : 'markdown',
+    \ 'kinds'     : [
+    \     'c:chapter:0:1',
+    \     's:section:0:1', 'S:subsection:0:1', 't:subsubsection:0:1',
+    \     'T:l4subsection:0:1', 'u:l5subsection:0:1',
+    \ ],
+    \ 'sro'           : '""',
+    \ 'kind2scope'    : {
+    \     'c' : 'chapter', 's' : 'section', 'S' : 'subsection', 't' : 'subsubsection', 'T' : 'l4subsection',
+    \ },
+    \ 'scope2kind'    : {
+    \     'chapter' : 'c', 'section' : 's', 'subsection' : 'S', 'subsubsection' : 't', 'l4subsection' : 'T',
+    \ },
 \ }
 map <leader>tf :TagbarForceUpdate<CR>
 map <leader>tt :TagbarToggle<CR>
@@ -274,21 +295,21 @@ map <leader>tt :TagbarToggle<CR>
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
 if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
+    inoremap <silent><expr> <c-space> coc#refresh()
 else
-  inoremap <silent><expr> <c-@> coc#refresh()
+    inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
@@ -311,13 +332,13 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
@@ -331,11 +352,11 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region.
@@ -361,12 +382,12 @@ omap ac <Plug>(coc-classobj-a)
 
 " Remap <C-f> and <C-b> for scroll float windows/popups.
 if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+    nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+    inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+    vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+    vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
 " Use CTRL-S for selections ranges.
@@ -498,101 +519,129 @@ endif
 autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 " hotkey to switch to buffer using their ordinal number in the bufferline
-nmap <C-1> <Plug>lightline#bufferline#go(1)
-nmap <C-2> <Plug>lightline#bufferline#go(2)
-nmap <C-3> <Plug>lightline#bufferline#go(3)
-nmap <C-4> <Plug>lightline#bufferline#go(4)
-nmap <C-5> <Plug>lightline#bufferline#go(5)
-nmap <C-6> <Plug>lightline#bufferline#go(6)
-nmap <C-7> <Plug>lightline#bufferline#go(7)
-nmap <C-8> <Plug>lightline#bufferline#go(8)
-nmap <C-9> <Plug>lightline#bufferline#go(9)
-nmap <C-0> <Plug>lightline#bufferline#go(10)
+nmap <A-1> <Plug>lightline#bufferline#go(1)
+nmap <A-2> <Plug>lightline#bufferline#go(2)
+nmap <A-3> <Plug>lightline#bufferline#go(3)
+nmap <A-4> <Plug>lightline#bufferline#go(4)
+nmap <A-5> <Plug>lightline#bufferline#go(5)
+nmap <A-6> <Plug>lightline#bufferline#go(6)
+nmap <A-7> <Plug>lightline#bufferline#go(7)
+nmap <A-8> <Plug>lightline#bufferline#go(8)
+nmap <A-9> <Plug>lightline#bufferline#go(9)
+nmap <A-0> <Plug>lightline#bufferline#go(10)
 " mappings to delete buffers by their oridinal number
-nmap <A-1> <Plug>lightline#bufferline#delete(1)
-nmap <A-2> <Plug>lightline#bufferline#delete(2)
-nmap <A-3> <Plug>lightline#bufferline#delete(3)
-nmap <A-4> <Plug>lightline#bufferline#delete(4)
-nmap <A-5> <Plug>lightline#bufferline#delete(5)
-nmap <A-6> <Plug>lightline#bufferline#delete(6)
-nmap <A-7> <Plug>lightline#bufferline#delete(7)
-nmap <A-8> <Plug>lightline#bufferline#delete(8)
-nmap <A-9> <Plug>lightline#bufferline#delete(9)
-nmap <A-0> <Plug>lightline#bufferline#delete(10)
+nmap <leader>d1 <Plug>lightline#bufferline#delete(1)
+nmap <leader>d2 <Plug>lightline#bufferline#delete(2)
+nmap <leader>d3 <Plug>lightline#bufferline#delete(3)
+nmap <leader>d4 <Plug>lightline#bufferline#delete(4)
+nmap <leader>d5 <Plug>lightline#bufferline#delete(5)
+nmap <leader>d6 <Plug>lightline#bufferline#delete(6)
+nmap <leader>d7 <Plug>lightline#bufferline#delete(7)
+nmap <leader>d8 <Plug>lightline#bufferline#delete(8)
+nmap <leader>d9 <Plug>lightline#bufferline#delete(9)
+nmap <leader>d0 <Plug>lightline#bufferline#delete(10)
 
 if has('nvim-0.5')
-lua << EOF
-    -------------------------------------------------------------------
-    -- Tree-Sitter config
-    -------------------------------------------------------------------
-    require'nvim-treesitter.configs'.setup { highlight = { enable = true }, }
-
-    -------------------------------------------------------------------
-    -- LSP config
-    -------------------------------------------------------------------
-    local nvim_lsp = require('lspconfig')
-
-    local on_attach = function(client, bufnr)
-    require('completion').on_attach()
-
-    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-    -- Mappings
-    local opts = { noremap=true, silent=true }
-    buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-    buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-    -- Set some keybinds conditional on server capabilities
-    if client.resolved_capabilities.document_formatting then
-        buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-    elseif client.resolved_capabilities.document_range_formatting then
-        buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-    end
-
-    -- Set autocommands conditional on server_capabilities
-    if client.resolved_capabilities.document_highlight then
-        vim.api.nvim_exec([[
-        :hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-        :hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-        :hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-        augroup lsp_document_highlight
-            autocmd!
-            autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-            autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-        augroup END
-        ]], false)
-    end
-  end
-
-  -- local servers = {'pyright', 'gopls', 'rust_analyzer'}
-  local servers = {'pyright'}
-  for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup {
-      on_attach = on_attach,
+"-------------------------------------------------------------------
+" Tree-Sitter config
+"-------------------------------------------------------------------
+:lua << EOF
+    require'nvim-treesitter.configs'.setup { 
+        highlight = { enable = true }, 
+        playground = {
+            enable = true,
+            disable = {},
+            updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+            persist_queries = false, -- Whether the query persists across vim sessions
+            keybindings = {
+                toggle_query_editor = 'o',
+                toggle_hl_groups = 'i',
+                toggle_injected_languages = 't',
+                toggle_anonymous_nodes = 'a',
+                toggle_language_display = 'I',
+                focus_language = 'f',
+                unfocus_language = 'F',
+                update = 'R',
+                goto_node = '<cr>',
+                show_help = '?',
+            },
+        },
+        query_linter = {
+            enable = true,
+            use_virtual_text = true,
+            lint_events = {"BufWrite", "CursorHold"},
+        },
     }
-  end
 EOF
 
-" Completion
+" -------------------------------------------------------------------
+" LSP config
+" -------------------------------------------------------------------
+:lua <<EOF
+    local nvim_lsp = require('lspconfig')
+    local on_attach = function(client, bufnr)
+        require('completion').on_attach()
+
+        local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+        local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+        buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+        -- Mappings.
+        local opts = { noremap=true, silent=true }
+        buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+        buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+        buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+        buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+        buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+        buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+        buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+        buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+        buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+        buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+        buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+        buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+        buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+        -- Set some keybinds conditional on server capabilities
+        if client.resolved_capabilities.document_formatting then
+            buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+        elseif client.resolved_capabilities.document_range_formatting then
+            buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+        end
+
+        -- Set autocommands conditional on server_capabilities
+        if client.resolved_capabilities.document_highlight then
+            vim.api.nvim_exec([[
+                hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+                hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+                hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+                augroup lsp_document_highlight
+                    autocmd! * <buffer>
+                    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+                augroup END
+            ]], false)
+        end
+    end
+
+    -- Use a loop to conveniently both setup defined servers 
+    -- and map buffer local keybindings when the language server attaches
+    local servers = {'clangd', 'cmake', 'gopls', 'jsonls', 'powershell_es', 'pyright', 'rust_analyzer', 'vimls'}
+    for _, lsp in ipairs(servers) do
+        nvim_lsp[lsp].setup {
+            on_attach = on_attach,
+        }
+    end
+EOF
+
+" Completion-nvim
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 " -------------------- LSP ---------------------------------
 
 
@@ -601,5 +650,103 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " ------------------------------------------------------------------------------
 lua require'colorizer'.setup()
 
+" ------------------------------------------------------------------------------
+" nvim-ts-context-commentstring
+" ------------------------------------------------------------------------------
+:lua <<EOF
+require'nvim-treesitter.configs'.setup {
+    context_commentstring = {
+        enable = true,
+        config = {
+            python = {
+                style_element = '# %s',
+            },
+            cpp = {
+                style_element = '// %s',
+            },
+        }
+    }
+}
+EOF
+nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_commentstring()<cr>
+
+" ------------------------------------------------------------------------------
+"  nvim-compe
+" ------------------------------------------------------------------------------
+set completeopt=menuone,noselect
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.autocomplete = v:true
+let g:compe.debug = v:false
+let g:compe.min_length = 1
+let g:compe.preselect = 'enable'
+let g:compe.throttle_time = 80
+let g:compe.source_timeout = 200
+let g:compe.incomplete_delay = 400
+let g:compe.max_abbr_width = 100
+let g:compe.max_kind_width = 100
+let g:compe.max_menu_width = 100
+let g:compe.documentation = v:true
+
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+let g:compe.source.vsnip = v:true
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+" ------------------------------------------------------------------------------
+" nvim-tree
+" ------------------------------------------------------------------------------
+"let g:nvim_tree_side = 'right' | 'left' "left by default
+let g:nvim_tree_width = 40 "30 by default
+let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
+let g:nvim_tree_auto_open = 0 "0 by default, opens the tree when typing `vim $DIR` or `vim`
+let g:nvim_tree_auto_close = 1 "0 by default, closes the tree when it's the last window
+" let g:nvim_tree_auto_ignore_ft = {'startify', 'dashboard'} "empty by default, don't auto open tree on specific filetypes.
+"let g:nvim_tree_quit_on_open = 1 "0 by default, closes the tree when you open a file
+let g:nvim_tree_follow = 1 "0 by default, this option allows the cursor to be updated when entering a buffer
+let g:nvim_tree_indent_markers = 1 "0 by default, this option shows indent markers when folders are open
+let g:nvim_tree_hide_dotfiles = 1 "0 by default, this option hides files and folders starting with a dot `.`
+let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
+let g:nvim_tree_root_folder_modifier = ':~' "This is the default. See :help filename-modifiers for more options
+let g:nvim_tree_tab_open = 1 "0 by default, will open the tree when entering a new tab and the tree was previously open
+let g:nvim_tree_width_allow_resize  = 1 "0 by default, will not resize the tree when opening a file
+" let g:nvim_tree_disable_netrw = 0 "1 by default, disables netrw
+" let g:nvim_tree_hijack_netrw = 0 "1 by default, prevents netrw from automatically opening when opening directories (but lets you keep its other utilities)
+" let g:nvim_tree_add_trailing = 1 "0 by default, append a trailing slash to folder names
+let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1, }
+"If 0, do not show the icons for one of 'git' 'folder' and 'files'
+"1 by default, notice that if 'files' is 1, it will only display
+"if nvim-web-devicons is installed and on your runtimepath
+
+" default will show icon by default if no icon is provided
+" default shows no icon by default
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ 'git': {
+    \   'unstaged': "✗", 'staged': "✓", 'unmerged': "", 'renamed': "➜",  'untracked': "★"  },
+    \ 'folder': {
+    \   'default': "", 'open': "", 'empty': "", 'empty_open': "", 'symlink': "", 'symlink_open': ""  }
+    \ }
+
+nnoremap <leader>tt :NvimTreeToggle<CR>
+nnoremap <leader>tr :NvimTreeRefresh<CR>
+nnoremap <leader>tn :NvimTreeFindFile<CR>
+" NvimTreeOpen and NvimTreeClose are also available if you need them
+" NvimTreeFindFile will open tree view and focus on it
+
+"Open file in current buffer or in split with FzF like bindings (<CR>, <C-v>, <C-x>, <C-t>)
+
+" a list of groups can be found at `:help nvim_tree_highlight`
+highlight NvimTreeFolderIcon guibg=blue
 
 endif
