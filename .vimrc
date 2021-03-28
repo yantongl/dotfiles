@@ -36,46 +36,35 @@ endif
 call plug#begin(plugpath)
     " Make sure you use single quotes
 
-    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } " file system explorer
+    " file explorer
+    Plug 'kyazdani42/nvim-web-devicons' " for file icons
+    Plug 'kyazdani42/nvim-tree.lua'
+
     Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }   " tag list
     Plug 'tpope/vim-fugitive'   " git plugin
 
-    " Plug 'vim-airline/vim-airline'    " status bar
-    " Plug 'vim-airline/vim-airline-themes'
     Plug 'itchyny/lightline.vim' " faster statusline colorschemes
     Plug 'mengelbrecht/lightline-bufferline'  " bufferline solorschemes
 
     " Fuzzy file finder
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
+    " telescope
+    Plug 'nvim-lua/popup.nvim'
+    Plug 'nvim-lua/plenary.nvim'    " shared functions by the author, required if installing other plugins from the same author
+    Plug 'nvim-telescope/telescope.nvim'
 
-    " Syntax highlight
+    " Syntax highlighting
     Plug 'PProvost/vim-ps1'
+    " tree-sitter
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/playground'
+    Plug 'JoosepAlviste/nvim-ts-context-commentstring' " comment based on the cursor location (require treesitter)
 
-    if has('nvim-0.5')
-        " tree-sitter
-        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-        Plug 'nvim-treesitter/playground'
-        Plug 'JoosepAlviste/nvim-ts-context-commentstring' " comment based on the cursor location (require treesitter)
-
-        " LSP
-        Plug 'neovim/nvim-lspconfig'
-        Plug 'nvim-lua/completion-nvim'
-"        Plug 'kabouzeid/nvim-lspinstall'
-"        Plug 'anott03/nvim-lspinstall'
-
-        " telescope
-        Plug 'nvim-lua/popup.nvim'
-        Plug 'nvim-lua/plenary.nvim'
-        Plug 'nvim-telescope/telescope.nvim'
-
-        " auto complete
-        Plug 'hrsh7th/nvim-compe'
-
-        " file explorer
-        Plug 'kyazdani42/nvim-web-devicons' " for file icons
-        Plug 'kyazdani42/nvim-tree.lua'
-    endif
+    " LSP
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'kabouzeid/nvim-lspinstall'
+"    Plug 'anott03/nvim-lspinstall'
 
     " colorscheme
     Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
@@ -83,10 +72,15 @@ call plug#begin(plugpath)
 
     " debugger
     Plug 'puremourning/vimspector'
+
     " auto complete
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    " color highligher
+    " Plug 'hrsh7th/nvim-compe'
+    " Plug 'nvim-lua/completion-nvim'
+
+    " colorizer 
     Plug 'norcalli/nvim-colorizer.lua'
+
     " show indentation guides to all lines (including empty lines)
     Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'} " only use lua branch before nvim0.5 is out
 call plug#end()            " required
@@ -117,11 +111,10 @@ call plug#end()            " required
     set noswapfile
     set noundofile
 
-
     " settings coc recommend to have
     set hidden              " coc says TextEdit might fail if hidden is not set
     set cmdheight=2
-    set updatetime=300
+    set updatetime=50
     set shortmess+=c
     " Always show the signcolumn, otherwise it would shift the text each time
     " diagnostics appear/become resolved.
@@ -541,7 +534,6 @@ nmap <leader>d8 <Plug>lightline#bufferline#delete(8)
 nmap <leader>d9 <Plug>lightline#bufferline#delete(9)
 nmap <leader>d0 <Plug>lightline#bufferline#delete(10)
 
-if has('nvim-0.5')
 "-------------------------------------------------------------------
 " Tree-Sitter config
 "-------------------------------------------------------------------
@@ -749,4 +741,3 @@ nnoremap <leader>tn :NvimTreeFindFile<CR>
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
 
-endif
