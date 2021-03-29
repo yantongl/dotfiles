@@ -158,7 +158,7 @@ call plug#end()            " required
     set colorcolumn=+1,+21,-19  " highlight column after textwidth
 
     " colorscheme must be set after plug configuration
-    colorscheme gruvbox 
+    colorscheme dracula
 
     " hi ColorColumn ctermbg=lightgrey guibg=red
     hi ColorColumn guibg=red
@@ -188,12 +188,7 @@ endif
 " GUI
 " ----------------------------------------------------------------------------
 " Termimal UI
-if exists('g:GuiLoaded')
-    GuiFont! Consolas:h11
-    GuiTabline 0
-else
     set guifont=Consolas:h11,Courier_New:h10
-endif
     set number      " Enable line numbers
     set cursorline  " Highlight current line
     set relativenumber " Use relative line numbers
@@ -218,7 +213,6 @@ endif
         " both nvim-colorizer and nvim-tree need termguicolors
         set termguicolors " this variable must be enabled for colors to be applied properly
     endif
-
 
     syntax enable
 "
@@ -343,18 +337,6 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-" Using lua functions
-" nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-" nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-" nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-" nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
-
-:lua <<EOF
---  require('telescope').setup() { }
---  require('telescope').load_extension('dap')
---  require('telescope').load_extension('vimspector')
-EOF
 
 " --------------------------------------------------------------
 " Vimspector
@@ -532,3 +514,5 @@ highlight NvimTreeFolderIcon guibg=blue
 " indent-blankline
 " -------------------------------------------------------------------------------
 let g:indent_blankline_char_list = ['¦', '¦', '┆', '┊']
+
+
