@@ -40,6 +40,7 @@ call plug#begin(plugpath)
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'kyazdani42/nvim-tree.lua'
 
+    Plug 'preservim/nerdcommenter'
     Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }   " tag list
     Plug 'tpope/vim-fugitive'   " git plugin
 
@@ -57,10 +58,10 @@ call plug#begin(plugpath)
 
     " Syntax highlighting
     Plug 'PProvost/vim-ps1'
+
     " tree-sitter
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/playground'
-    Plug 'JoosepAlviste/nvim-ts-context-commentstring' " comment based on the cursor location (require treesitter)
 
     " LSP
     Plug 'neovim/nvim-lspconfig'
@@ -96,7 +97,7 @@ call plug#begin(plugpath)
     " display the key bindings following your currently entered incomplete command
     Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
     Plug 'AckslD/nvim-whichkey-setup.lua'
-    "
+    
 call plug#end()            " required
 " Brief help
 " :PlugInstall      - installs plugins
@@ -170,6 +171,7 @@ call plug#end()            " required
 " Automatic commands
 if has("autocmd")
     filetype on " Enable file type detection
+    filetype plugin on
     " Treat .json files as .js
     autocmd BufNewFile,BufRead *.json   setfiletype json syntax=javascript
     " Treat .md files as Markdown
@@ -258,6 +260,7 @@ imap <F2> <C-O>:w<CR>
 
 let g:which_key_map = {}  " define vim-which-key prefix dictionary
 let g:which_key_map.b = {'name': 'buffer edit' }
+let g:which_key_map.c = {'name': 'NerdCommenter' }
 let g:which_key_map.f = {'name': 'file edit' }
 let g:which_key_map.w = {'name': 'window edit' }
 
@@ -685,25 +688,6 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " ------------------------------------------------------------------------------
 lua require'colorizer'.setup()
 
-" ------------------------------------------------------------------------------
-" nvim-ts-context-commentstring
-" ------------------------------------------------------------------------------
-:lua <<EOF
-require'nvim-treesitter.configs'.setup {
-    context_commentstring = {
-        enable = true,
-        config = {
-            python = {
-                style_element = '# %s',
-            },
-            cpp = {
-                style_element = '// %s',
-            },
-        }
-    }
-}
-EOF
-" nnoremap <leader>c <cmd>lua require('ts_context_commentstring.internal').update_commentstring()<cr>
 
 " ------------------------------------------------------------------------------
 "  nvim-compe
