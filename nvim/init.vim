@@ -102,7 +102,7 @@ call plug#begin(plugpath)
     " display the key bindings following your currently entered incomplete command
     Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
     Plug 'AckslD/nvim-whichkey-setup.lua'
-    
+
 call plug#end()            " required
 " Brief help
 " :PlugInstall      - installs plugins
@@ -431,7 +431,7 @@ lua require('tree-sitter-config')
 " -------------------------------------------------------------------
 " LSP config
 " -------------------------------------------------------------------
-lua require('nvim-lsp-config') 
+lua require('nvim-lsp-config')
 
 " ------------------------------------------------------------------------------
 " nvim-colorizer
