@@ -1,6 +1,9 @@
 " ----------------------------------------------------------------------------
 " START
 " ----------------------------------------------------------------------------
+"  TODO:
+"   - move neovim lua config to its own folder.
+"   - split neovim config
 set nocompatible " be iMproved,  required
 filetype off     " required
 
@@ -780,3 +783,7 @@ highlight NvimTreeFolderIcon guibg=blue
 " let g:maximizer_default_mapping_key = '<F3>'
 
 
+"------------------------------------------------------------------------------
+" indent-blankline
+" -------------------------------------------------------------------------------
+let g:indent_blankline_char_list = ['¦', '¦', '┆', '┊']
