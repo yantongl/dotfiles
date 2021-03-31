@@ -188,7 +188,10 @@ endif
 " GUI
 " ----------------------------------------------------------------------------
 " Termimal UI
-    set guifont=Consolas:h11,Courier_New:h10
+"
+if isNvimQt == 0
+    " set guifont=Consolas:h11,Courier_New:h10
+endif
     set number      " Enable line numbers
     set cursorline  " Highlight current line
     set relativenumber " Use relative line numbers
@@ -496,8 +499,6 @@ nnoremap <leader>tn :NvimTreeFindFile<CR>
 
 "Open file in current buffer or in split with FzF like bindings (<CR>, <C-v>, <C-x>, <C-t>)
 
-" a list of groups can be found at `:help nvim_tree_highlight`
-highlight NvimTreeFolderIcon guibg=blue
 
 "------------------------------------------------------------------------------
 " vim-maximizer
