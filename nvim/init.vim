@@ -21,15 +21,8 @@ else
 endif
 
 if !filereadable(vimplug_exists)
-    if !executable('curl')
-        echoerr "You have to install curl or first install vim-plug yourself!"
-        execute "q!"
-    endif
-    echo "Installing Vim-Plug..."
-    echo ""
     silent exec "!curl -fLo " . shellescape(vimplug_exists) . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     let g:not_finish_vimplug = "yes"
-
     autocmd VimEnter * PlugInstall
 endif
 "-------- end vim-plug setup ----
@@ -131,18 +124,10 @@ call plug#end()            " required
     set noundofile
 
     "" settings coc recommend to have
-    "set hidden              " coc says TextEdit might fail if hidden is not set
-    "set cmdheight=2
-    "set updatetime=50
-    "set shortmess+=c
-    "" Always show the signcolumn, otherwise it would shift the text each time
-    "" diagnostics appear/become resolved.
-    "if has("patch-8.1.1564")
-    "    " Recently vim can merge signcolumn and number column into one
-    "    set signcolumn=number
-    "else
-    "    set signcolumn=yes
-    "endif
+    set hidden
+    set cmdheight=2
+    set updatetime=50
+    set shortmess+=c
 
     au FocusGained * :checktime  " when regain focus, check if any buffer were changed outside.
     set autoread    " auto reload a file if it is detected to have been changed outside.
@@ -188,7 +173,10 @@ endif
 " GUI
 " ----------------------------------------------------------------------------
 " Termimal UI
+"
+if isNvimQt == 0
     set guifont=Consolas:h11,Courier_New:h10
+endif
     set number      " Enable line numbers
     set cursorline  " Highlight current line
     set relativenumber " Use relative line numbers
@@ -216,6 +204,9 @@ endif
 
     syntax enable
 "
+let g:loaded_python_provider = 0 " disable python2 provider
+let g:loaded_ruby_provider = 0
+let g:loaded_perl_provider = 0
 
 " ----------------------------------------------------------------------------
 " MAP KEY
@@ -293,6 +284,8 @@ let g:which_key_map.f.r = 'reload $MYVIMRC'
 " ------------------------------------------------------------------------------
 " Plugin configurations
 " ------------------------------------------------------------------------------
+let g:indent_blankline_show_first_indent_level = v:false
+let g:indent_blankline_user_treesitter = v:true
 
 """  Tagbar
 " to display tags ordered by heading on markdown files
@@ -337,6 +330,7 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fk <cmd>Telescope keymaps<cr>
 
 " --------------------------------------------------------------
 " Vimspector
@@ -456,7 +450,7 @@ endif
 " nvim-tree
 " ------------------------------------------------------------------------------
 "let g:nvim_tree_side = 'right' | 'left' "left by default
-let g:nvim_tree_width = 40 "30 by default
+"let g:nvim_tree_width = 40 "30 by default
 let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
 let g:nvim_tree_auto_open = 0 "0 by default, opens the tree when typing `vim $DIR` or `vim`
 let g:nvim_tree_auto_close = 1 "0 by default, closes the tree when it's the last window
@@ -496,8 +490,6 @@ nnoremap <leader>tn :NvimTreeFindFile<CR>
 
 "Open file in current buffer or in split with FzF like bindings (<CR>, <C-v>, <C-x>, <C-t>)
 
-" a list of groups can be found at `:help nvim_tree_highlight`
-highlight NvimTreeFolderIcon guibg=blue
 
 "------------------------------------------------------------------------------
 " vim-maximizer
