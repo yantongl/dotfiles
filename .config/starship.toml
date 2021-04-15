@@ -1,0 +1,57 @@
+# Inserts a blank line between shell prompts
+add_newline = true
+
+# change orders
+# 1st line: [time][battery][lang][memory][lastCmdDuration]
+# 2nd line: [username][hostname][status][directory][VCS info] [characters]
+format = """
+$time\
+$battery\
+$cmake$dotnet$erlang$golang$java$lua$python$ruby$rust$swift$conda\
+$memory_usage\
+$cmd_duration\
+$line_break\
+$username\
+$hostname\
+$status\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$hg_branch\
+$character"""
+
+# Replace the "❯" symbol in the prompt with "➜"
+[character]                          # The name of the module we are configuring is "character"
+success_symbol = "[➜](bold green)"  # The format string used before the text input if the previous command succeeded.
+error_symbol = "[❯](bold red)"
+vicmd_symbol = "[❮](bold green)"
+
+# [cmd_duration] shows how long the last command took to execute
+[cmd_duration]
+min_time = 1  # Shortest duration to show time for (in milliseconds).
+format = "underwent [$duration](bold yellow)"
+
+[directory]
+truncation_length = 6
+truncation_symbol = "…/"
+truncate_to_repo = true
+
+[memory_usage]
+disabled = false
+threshold = -1
+symbol = "🐏"
+style = "bold dimmed white"
+format = "MEM $symbol [${ram}( | ${swap})]($style) "
+
+[nodejs]
+disabled = true
+format = "nodejs [🤖 $version](bold green) "
+
+[time]
+disabled = false
+format = '🕙[\[ $time \]]($style) '
+time_format = "%T"
+utc_time_offset = "-7"
+time_range = "10:00:00-14:00:00"
