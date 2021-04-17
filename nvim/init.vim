@@ -450,9 +450,11 @@ endif
 " NERDTree
 " ------------------------------------------------------------------------------
 
+let g:which_key_map.n = {'name': 'NERDTree' }
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>nn :NERDTreeFocus<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
+" NERDTreeFind will show directory on current file
 
 
 
