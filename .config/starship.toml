@@ -11,15 +11,8 @@ $cmake$dotnet$erlang$golang$java$lua$python$ruby$rust$swift$conda\
 $memory_usage\
 $cmd_duration\
 $line_break\
-$username\
-$hostname\
-$status\
-$directory\
-$git_branch\
-$git_commit\
-$git_state\
-$git_status\
-$hg_branch\
+$username$hostname$status$directory\
+$git_branch$git_commit$git_state$git_status$hg_branch\
 $character"""
 
 # Replace the "❯" symbol in the prompt with "➜"
@@ -31,7 +24,7 @@ vicmd_symbol = "[❮](bold green)"
 # [cmd_duration] shows how long the last command took to execute
 [cmd_duration]
 min_time = 1  # Shortest duration to show time for (in milliseconds).
-format = "underwent [$duration](bold yellow)"
+format = "[ 羽 $duration ](italic dimmed black bg:cyan)"
 
 [directory]
 truncation_length = 6
@@ -41,9 +34,8 @@ truncate_to_repo = true
 [memory_usage]
 disabled = false
 threshold = -1
-symbol = "🐏"
-style = "bold dimmed white"
-format = "MEM $symbol [${ram}( | ${swap})]($style) "
+style = "bold dimmed black"
+format = "[  ${ram}( | ${swap}) ]($style bg:yellow)"
 
 [nodejs]
 disabled = true
@@ -51,7 +43,20 @@ format = "nodejs [🤖 $version](bold green) "
 
 [time]
 disabled = false
-format = '🕙[\[ $time \]]($style) '
+format = '[  $time ](bg:white black italic)'
 time_format = "%T"
 utc_time_offset = "-7"
-time_range = "10:00:00-14:00:00"
+
+
+[username]
+#style_user = "white bold"
+#style_root = "black bold"
+format = "[$user]($style italic) "
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = true
+format =  "[@$hostname](yellow) in "
+#trim_at = ".companyname.com"
+disabled = false
