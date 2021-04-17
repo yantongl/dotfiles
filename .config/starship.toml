@@ -53,10 +53,12 @@ utc_time_offset = "-7"
 #style_root = "black bold"
 format = "[$user]($style italic) "
 disabled = false
-show_always = true
+show_always = false
+ssh_only = true
 
 [hostname]
 ssh_only = true
 format =  "[@$hostname](yellow) in "
 #trim_at = ".companyname.com"
 disabled = false
+show_always = false
