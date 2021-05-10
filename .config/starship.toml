@@ -54,11 +54,10 @@ utc_time_offset = "-7"
 format = "[$user]($style italic) "
 disabled = false
 show_always = false
-ssh_only = true
 
 [hostname]
 ssh_only = true
 format =  "[@$hostname](yellow) in "
 #trim_at = ".companyname.com"
 disabled = false
-show_always = false
+
