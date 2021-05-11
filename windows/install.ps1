@@ -19,7 +19,11 @@ Function IsInstalled([string] $appname) {
 Function MakeSymbolicLink([string] $target, [string] $source) {
     Remove-Item -Recurse "$target" -ErrorAction SilentlyContinue
     Write-Output "linking $target to $source"
-    New-Item -Path "$target" -ItemType SymbolicLink -Value "$source"
+    if (Test-Path -Path $source -PathType Container) {
+        New-Item -Path "$target" -ItemType SymbolicLink -Value "$source"
+    } else {
+        iex "cmd /c mklink /J $target $source"
+    }
 }
 
 Function ConfigPowershell {
@@ -36,13 +40,13 @@ Function ConfigPowershell {
 
 Function InstallPackageManager {
     # install chocolatey
-    if (-not IsInstalled choco)
+    if (-not (IsInstalled choco))
     {
         iwr -useb https://chocolatey.org/install.ps1 | iex
     }
 
     # install scoop and its extra buckets
-    if (-not IsInstalled scoop)
+    if (-not (IsInstalled scoop))
     {
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
@@ -76,7 +80,7 @@ Function ConfigMiscTools {
     MakeSymbolicLink "$env:LOCALAPPDATA\nvim" "$currentDir/../shared/nvim"  # vim configuration
     python -m pip install --user --upgrade pynvim  # let python be aware of pynvim module
     # install tree-sitter.exe
-    cargo install tree-sitter-cli
+    #cargo install tree-sitter-cli
     pip3 install tree_sitter
 
     # starship
@@ -103,7 +107,6 @@ Function ConfigMiscTools {
 
 pushd
     ConfigPowershell
-    ConfigWindowsTerminal
     InstallPackageManager
     ConfigMiscTools
 popd
