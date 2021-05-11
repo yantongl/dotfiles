@@ -17,7 +17,7 @@ Function IsInstalled([string] $appname) {
 }
 
 Function MakeSymbolicLink([string] $target, [string] $source) {
-    Remove-Item -Recurse $target
+    Remove-Item -Recurse "$target" -ErrorAction SilentlyContinue
     Write-Output "linking $target to $source"
     New-Item -Path "$target" -ItemType SymbolicLink -Value "$source"
 }
@@ -27,9 +27,7 @@ Function ConfigPowershell {
     New-Item $profileDir -ItemType Directory -Force -ErrorAction SilentlyContinue # create $profileDir folder
 
     # link all .ps1 files
-    gci powershell *.ps1 | foreach-object {
-        MakeSymbolicLink "$profileDir/$_.name" "$_.fullname"
-    }
+    gci powershell *.ps1 | foreach-object { MakeSymbolicLink "$profileDir\$($_.Name)" $_.fullname }
 
     # install powershell modules
     Install-Module -Name Terminal-Icons -Repository PSGallery
