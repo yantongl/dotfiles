@@ -18,11 +18,12 @@ Function IsInstalled([string] $appname) {
 
 Function MakeSymbolicLink([string] $target, [string] $source) {
     Remove-Item -Recurse "$target" -ErrorAction SilentlyContinue
-    Write-Output "linking $target to $source"
     if (Test-Path -Path $source -PathType Container) {
-        New-Item -Path "$target" -ItemType SymbolicLink -Value "$source"
-    } else {
+    	Write-Output "make junction $target to $source"
         iex "cmd /c mklink /J $target $source"
+    } else {
+    	Write-Output "linking file $target to $source"
+        New-Item -Path "$target" -ItemType SymbolicLink -Value "$source"
     }
 }
 
@@ -75,9 +76,10 @@ Function InstallPackageManager {
 Function ConfigMiscTools {
     $location = get-location
     $currentDir = $location.Path
+    $dotfilesDir = Split-Path -parent $currentDir
 
     # apps nvim needs
-    MakeSymbolicLink "$env:LOCALAPPDATA\nvim" "$currentDir/../shared/nvim"  # vim configuration
+    MakeSymbolicLink "$env:LOCALAPPDATA\nvim" "$dotfilesDir\shared\nvim"  # vim configuration
     python -m pip install --user --upgrade pynvim  # let python be aware of pynvim module
     # install tree-sitter.exe
     #cargo install tree-sitter-cli
