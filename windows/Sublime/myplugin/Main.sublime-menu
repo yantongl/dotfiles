@@ -1,0 +1,21 @@
+// this file adds to MAIN menu
+[
+    {
+        "caption": "myplugin",
+        "mnemonic": "m", // shortcut to open this menu after pressing Alt
+        "children": [
+            {
+                "caption" : "OpenExternally",
+                "command" : "open_by_system"
+            },
+            {
+                "caption" : "InsertDate",
+                "command" : "insert_date"
+            },
+            {
+                "caption" : "P4 checkout",
+                "command" : "p4_checkout"
+            }
+        ]
+    }
+]

@@ -1,0 +1,99 @@
+{
+	"added_words":
+	[
+		"bool",
+		"const",
+		"cpp",
+		"wwise",
+		"dll",
+		"json"
+	],
+	"color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
+	"file_exclude_patterns":
+	[
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db",
+		"*.sublime-workspace",
+		".dropbox",
+		"desktop.ini"
+	],
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		".vscode",
+		".dropbox.cache"
+	],
+	"font_face": "CaskaydiaCove NF",
+	"font_size": 10,
+	"ignored_packages":
+	[
+		"ActionScript",
+		"AppleScript",
+		"ASP",
+		"Clojure",
+		"CSS",
+		"D",
+		"Diff",
+		"Erlang",
+		"Graphviz",
+		"Groovy",
+		"Haskell",
+		"LaTeX",
+		"Lisp",
+		"Objective-C",
+		"OCaml",
+		"Pascal",
+		"Perl",
+		"PHP",
+		"R",
+		"Rails",
+		"Rust",
+		"Scala",
+		"SublimeLinter-pep8",
+		"TCL",
+		"Textile"
+	],
+	"ignored_words":
+	[
+		"32bit",
+		"64bit",
+		"Audiokinetic",
+		"Plugins",
+		"p4",
+		"plugins",
+		"py",
+		"sln",
+		"x86"
+	],
+	"rulers":
+	[
+		80,
+		100
+	],
+	"show_encoding": true,
+	"spell_check": true,
+	"theme": "Soda SolarizedDark.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true,
+	"vintage_start_in_command_mode": false
+}

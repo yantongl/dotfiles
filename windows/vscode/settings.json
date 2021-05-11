@@ -1,0 +1,118 @@
+// Place your settings in this file to overwrite the default settings
+{
+    // Editor
+    // Controls the font family.
+    // Win: Unbunto Mono for EN, 'YaHei Consolas Hybrid' for CN
+    // 如果只能设一种font，那么用最好用Inconsolata,或者WenQuanYi Zen Hei Mono
+    //"editor.fontFamily": "Ubuntu Mono, Monaco, Inconsolata, 'YaHei Consolas Hybrid', 'WenQuanYi Zen Hei Mono', Consolas, 'Courier New', monospace",
+    "editor.fontFamily": "Consolas",
+    // Columns at which to show vertical rulers
+    "editor.rulers": [
+        80,
+        120
+    ],
+    // Controls if lines should wrap. The lines will wrap at min(editor.wrappingColumn, viewportWidthInColumns).
+    "editor.wordWrap": "wordWrapColumn",
+    // Configure editor settings to be overridden for [markdown] language.
+    "[markdown]": { "editor.wordWrap": "wordWrapColumn" },
+    "[python]" : { "editor.rulers": [79, 120] }, // python specific ruler settings
+    // Files
+    // Configure glob patterns for excluding files and folders.
+    "files.exclude": {
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/.hg": true,
+        "**/.svn": true,
+        "**/*.7z": true,
+        "**/*.a": true,
+        "**/*.anm": true,
+        "**/*.blnd": true,
+        "**/*.bmp": true,
+        "**/*.bz2": true,
+        "**/*.dae": true,
+        "**/*.db": true,
+        "**/*.ddf": true,
+        "**/*.dds": true,
+        "**/*.dll": true,
+        "**/*.doc": true,
+        "**/*.docx": true,
+        "**/*.dylib": true,
+        "**/*.eot": true,
+        "**/*.epub": true,
+        "**/*.exe": true,
+        "**/*.fx": true,
+        "**/*.gif": true,
+        "**/*.gz": true,
+        "**/*.ico": true,
+        "**/*.idb": true,
+        "**/*.ilk": true,
+        "**/*.ipch": true,
+        "**/*.jar": true,
+        "**/*.jpeg": true,
+        "**/*.jpg": true,
+        "**/*.JPG": true,
+        "**/*.lib": true,
+        "**/*.mp3": true,
+        "**/*.mp4": true,
+        "**/*.ncb": true,
+        "**/*.o": true,
+        "**/*.obj": true,
+        "**/*.odt": true,
+        "**/*.pdb": true,
+        "**/*.png": true,
+        "**/*.ppt": true,
+        "**/*.pptx": true,
+        "**/*.psd": true,
+        "**/*.pyc": true,
+        "**/*.pyo": true,
+        "**/*.rar": true,
+        "**/*.scb": true,
+        "**/*.sco": true,
+        "**/*.sdf": true,
+        "**/*.so": true,
+        "**/*.suo": true,
+        "**/*.swf": true,
+        "**/*.tar": true,
+        "**/*.tga": true,
+        "**/*.ttf": true,
+        "**/*.xlsx": true,
+        "**/*.zip": true
+    },
+    // Automatically update extensions
+    "C_Cpp.updateChannel": "Insiders",
+    "editor.renderControlCharacters": true,
+    "editor.renderWhitespace": "all",
+    "editor.fontLigatures": true,
+    "extensions.autoUpdate": true,
+    "files.autoSave": "afterDelay",
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "jupyter.interactiveWindowMode": "perFile",
+    "python.linting.flake8Args": [
+        "--max-line-length=120"
+    ],
+    "terminal.integrated.fontFamily": "monospace",
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
+    "vsicons.dontShowNewVersionMessage": true,
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "Visual Studio 2019 Dark",
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
+    "workbench.iconTheme": "vscode-icons",
+    "python.languageServer": "Pylance",
+    "python.linting.mypyArgs": [
+        "--follow-imports=silent",
+        "--show-column-numbers"
+    ],
+    "cmake.configureOnOpen": false,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "markdown-preview-enhanced.revealjsTheme": "league.css",
+    "terminal.integrated.fontSize": 14,
+    "editor.wordWrapColumn": 120
+}

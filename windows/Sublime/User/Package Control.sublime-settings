@@ -1,0 +1,47 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Anaconda",
+		"AutoHotkey",
+		"CMake",
+		"Coffee Color Scheme",
+		"Debugger",
+		"FASTBuild",
+		"GNU Octave Completions",
+		"gruvbox",
+		"Gruvbox Dark",
+		"HexViewer",
+		"INI",
+		"JSONComma",
+		"Log Highlight",
+		"LogView",
+		"LSP",
+		"LSP-bash",
+		"LSP-pyright",
+		"Markdown Extended",
+		"Monokai Extended",
+		"OctaveSupport",
+		"Origami",
+		"Outline",
+		"Package Control",
+		"PowerShell",
+		"Pretty JSON",
+		"SideBarEnhancements",
+		"Status Bar File Size",
+		"sublack",
+		"SublimeEnhancedUtilitiesSet",
+		"SublimeLinter",
+		"SublimeLinter-contrib-markdownlint",
+		"SublimeLinter-pep8",
+		"SublimeLinter-pyflakes",
+		"SublimeREPL",
+		"Terminus",
+		"Theme - Soda SolarizedDark",
+		"TOML",
+		"Visual Studio Dark"
+	]
+}

@@ -1,0 +1,73 @@
+{
+    "binary_file_patterns":
+    [
+        "*.dds",
+        "*.eot",
+        "*.gif",
+        "*.ico",
+        "*.jar",
+        "*.jpeg",
+        "*.jpg",
+        "*.pdf",
+        "*.png",
+        "*.swf",
+        "*.tga",
+        "*.ttf",
+        "*.zip"
+    ],
+    "color_scheme": "Packages/User/SublimeLinter/Monokai Extended Origin (SL).tmTheme",
+    "file_exclude_patterns":
+    [
+        "*.pyc",
+        "*.pyo",
+        "*.exe",
+        "*.dll",
+        "*.obj",
+        "*.o",
+        "*.a",
+        "*.lib",
+        "*.so",
+        "*.dylib",
+        "*.ncb",
+        "*.sdf",
+        "*.suo",
+        "*.pdb",
+        "*.idb",
+        ".DS_Store",
+        "*.class",
+        "*.psd",
+        "*.db",
+        "*.sublime-workspace",
+        "*.pdf",
+        "*.doc",
+        "*.docx",
+        "*.odt",
+        ".ctrlp",
+        ".dir-locals.el",
+        ".dropbox",
+        "desktop.ini"
+    ],
+    "folder_exclude_patterns":
+    [
+        ".svn",
+        ".git",
+        ".hg",
+        "CVS",
+        ".dropbox.cache",
+        "Tools/Waffles/third_party"
+    ],
+    "font_options":
+    [
+        "directwrite"
+    ],
+    "font_size": 11,
+    "remember_open_files": true,
+    "rulers":
+    [
+        80
+    ],
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "trim_trailing_white_space_on_save": true,
+    "wrap_width": 80
+}

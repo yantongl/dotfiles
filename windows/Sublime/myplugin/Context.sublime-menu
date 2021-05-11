@@ -1,0 +1,24 @@
+// this file adds to context menu
+[
+    {
+        "caption": "myplugin",
+        "children": [
+            {
+                "caption" : "Open By System",
+                "command" : "open_by_system"
+            },
+            {
+                "caption" : "Insert Date",
+                "command" : "insert_date"
+            },
+            {
+                "caption" : "P4 Checkout",
+                "command" : "p4_checkout"
+            },
+            {
+                "caption" : "Open in NvimQt",
+                "command" : "open_in_nvimqt"
+            }
+        ]
+    }
+]

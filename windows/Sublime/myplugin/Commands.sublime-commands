@@ -1,0 +1,19 @@
+// this file add commands to Sublime (Ctrl+Shift+P)
+[
+    {
+        "caption": "myplugin: Markdown 2 HTML",
+        "command": "markdown2_html"
+    },
+    {
+        "caption": "myplugin: P4 checkout",
+        "command": "p4_checkout"
+    },
+    {
+        "caption": "myplugin: Open by System",
+        "command": "open_by_system"
+    },
+    {
+        "caption": "myplugin: Insert Date",
+        "command": "insert_date"
+    }
+]

@@ -1,0 +1,11 @@
+// this file adds to Side Bar context menu
+[
+    {
+        "caption" : "OpenExternally",
+        "command" : "open_by_system"
+    },
+    {
+        "caption" : "P4 checkout",
+        "command" : "p4_checkout"
+    }
+]

@@ -1,0 +1,52 @@
+
+** 2016-03-09 20:33:51.232699 **:
+MarGo: Missing required environment variables: GOPATH
+See the `Quirks` section of USAGE.md for info
+--------------------------------
+
+** 2016-03-09 21:03:08.394398 **:
+MarGo: Missing required environment variables: GOPATH
+See the `Quirks` section of USAGE.md for info
+--------------------------------
+
+** 2016-03-09 21:04:43.092867 **:
+MarGo: Missing required environment variables: GOPATH
+See the `Quirks` section of USAGE.md for info
+--------------------------------
+
+** 2016-03-09 21:25:10.084554 **:
+MarGo: Missing required environment variables: GOPATH
+See the `Quirks` section of USAGE.md for info
+--------------------------------
+Gocode pkg: "."
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "."
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "."
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "HelloWorld"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/yantongl/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "HelloWorld"
+Gocode pkg: "github.com/yantongl/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/yantongl/stringutil"
+Gocode pkg: "."
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "."
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "."
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/golang/example/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/golang/example/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/golang/example/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/golang/example/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/golang/example/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}
+Gocode pkg: "github.com/yantongl/hello"
+Gocode env: gocode.margoEnv{LibPath:"C:\\Go\\pkg\\windows_amd64;C:\\Users\\yliu\\Dropbox\\workspace\\golang\\pkg\\windows_amd64", GOOS:"windows", GOARCH:"amd64", Compiler:"gc", GOROOT:"C:\\Go\\", GOPATH:"C:\\Users\\yliu\\Dropbox\\workspace\\golang", InstallSuffix:""}

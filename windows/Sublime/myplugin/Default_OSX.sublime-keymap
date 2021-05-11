@@ -1,0 +1,9 @@
+[
+    {
+        "keys": ["ctrl+alt+shift+b"], "command": "md_bold", "context":
+        [
+            { "key": "selector", "operator": "equal", "operand": "text.html.markdown" }
+        ]
+    },
+    { "keys": ["ctrl+alt+e"], "command": "p4_checkout"}
+]

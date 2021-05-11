@@ -1,0 +1,11 @@
+// this file add to key binding
+[
+    {
+        "keys": ["ctrl+alt+shift+b"], "command": "md_bold", "context":
+        [
+            { "key": "selector", "operator": "equal", "operand": "text.html.markdown" }
+        ]
+    },
+    { "keys": ["ctrl+alt+e"], "command": "p4_checkout"},
+    { "keys": ["insert+f5"], "command": "insert_date"}
+]
