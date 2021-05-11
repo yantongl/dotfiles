@@ -4,7 +4,7 @@
 
 # Set GVim as default vim
 Set-Alias vim nvim
-Set-Alias qvim nvim-qt
+Set-Alias qv nvim-qt
 Set-Alias sw search_word
 
 $profiledir=(Split-Path -parent $profile)
