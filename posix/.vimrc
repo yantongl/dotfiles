@@ -16,8 +16,11 @@ if isNeovim==1
     let plugpath=stdpath('data') . '/plugged'
     let vimplug_exists=stdpath('data') . '/site/autoload/plug.vim'
 else
-    let plugpath=expand('~/.config/vim-data/plugged')
-    let vimplug_exists=expand('~/.config/vim-data/autoload/plug.vim')
+    " windows path
+    let plugpath=expand('~/vimfiles/plugged')
+    let vimplug_exists=expand('~/vimfiles/autoload/plug.vim')
+    " let plugpath=expand('~/.config/vim-data/plugged')
+    " let vimplug_exists=expand('~/.config/vim-data/autoload/plug.vim')
 endif
 
 if !filereadable(vimplug_exists)
@@ -41,8 +44,8 @@ call plug#begin(plugpath)
     " Make sure you use single quotes
 
     " file explorer
-    Plug 'kyazdani42/nvim-web-devicons' " for file icons
-    Plug 'kyazdani42/nvim-tree.lua'
+    Plug 'ryanoasis/vim-devicons' " for file icons
+    Plug 'preservim/nerdtree' 
 
     Plug 'preservim/nerdcommenter'
     Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }   " tag list
@@ -54,25 +57,9 @@ call plug#begin(plugpath)
     " Fuzzy file finder
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
-    " telescope
-    Plug 'nvim-lua/popup.nvim'
-    Plug 'nvim-lua/plenary.nvim'    " shared functions by the author, required if installing other plugins from the same author
-    Plug 'nvim-telescope/telescope.nvim'
-    Plug 'nvim-telescope/telescope-vimspector.nvim'
 
     " Syntax highlighting
     Plug 'PProvost/vim-ps1'
-
-    " tree-sitter
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'nvim-treesitter/playground'
-
-    " LSP
-    Plug 'neovim/nvim-lspconfig'
-    "Plug 'kabouzeid/nvim-lspinstall'   " this config runs cmd line as in linux shell. Not work on Windows
-    "Plug 'anott03/nvim-lspinstall'     " this plug has little LSP server I want
-    Plug 'mattn/vim-lsp-settings'       " this works great. Just :LspInstallServer after open a file, it will install for current file
-    Plug 'onsails/lspkind-nvim'
 
     " colorscheme
     Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
@@ -89,20 +76,11 @@ call plug#begin(plugpath)
     Plug 'szw/vim-maximizer' " Maximizes and restores the current window in Vim.
 
     " auto complete
-    Plug 'hrsh7th/nvim-compe'
-    " Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    " Plug 'nvim-lua/completion-nvim'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-    " colorizer
-    Plug 'norcalli/nvim-colorizer.lua'
-
-    " show indentation guides to all lines (including empty lines)
-    Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'} " only use lua branch before nvim0.5 is out
 
     " display the key bindings following your currently entered incomplete command
     Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-    Plug 'AckslD/nvim-whichkey-setup.lua'
-    
 call plug#end()            " required
 " Brief help
 " :PlugInstall      - installs plugins
@@ -194,6 +172,9 @@ if exists('g:GuiLoaded')
 else
     set guifont=Consolas:h11,Courier_New:h10
 endif
+    set guioptions-=T
+    set guioptions-=m
+    set guioptions-=e
     set number      " Enable line numbers
     set cursorline  " Highlight current line
     set relativenumber " Use relative line numbers
@@ -335,27 +316,6 @@ nnoremap <C-p> :FZF<cr>
 " customize :Files command to show preview with `bat`
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--preview', 'bat --color=always --style=numbers {}']}, <bang>0)
 
-" --------------------------------------------------------------------
-" Telescope config
-" --------------------------------------------------------------------
-" Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-" Using lua functions
-" nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-" nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-" nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-" nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
-
-:lua <<EOF
---  require('telescope').setup() { }
---  require('telescope').load_extension('dap')
---  require('telescope').load_extension('vimspector')
-EOF
-
 " --------------------------------------------------------------
 " Vimspector
 " --------------------------------------------------------------
@@ -440,82 +400,6 @@ nmap <leader>bd7 <Plug>lightline#bufferline#delete(7)
 nmap <leader>bd8 <Plug>lightline#bufferline#delete(8)
 nmap <leader>bd9 <Plug>lightline#bufferline#delete(9)
 nmap <leader>bd0 <Plug>lightline#bufferline#delete(10)
-
-"-------------------------------------------------------------------
-" Tree-Sitter config
-"-------------------------------------------------------------------
-lua require('tree-sitter-config')
-
-" -------------------------------------------------------------------
-" LSP config
-" -------------------------------------------------------------------
-lua require('nvim-lsp-config') 
-
-" ------------------------------------------------------------------------------
-" nvim-colorizer
-" ------------------------------------------------------------------------------
-lua require'colorizer'.setup()
-
-" ------------------------------------------------------------------------------
-"  nvim-compe
-" ------------------------------------------------------------------------------
-if has_key(plugs, "nvim-compe")
-    set completeopt=menuone,noselect
-    lua require('nvim-compe-config')
-
-    inoremap <silent><expr> <C-Space> compe#complete()
-    inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-    inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-    inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-    inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-endif
-
-" ------------------------------------------------------------------------------
-" nvim-tree
-" ------------------------------------------------------------------------------
-"let g:nvim_tree_side = 'right' | 'left' "left by default
-let g:nvim_tree_width = 40 "30 by default
-let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
-let g:nvim_tree_auto_open = 0 "0 by default, opens the tree when typing `vim $DIR` or `vim`
-let g:nvim_tree_auto_close = 1 "0 by default, closes the tree when it's the last window
-" let g:nvim_tree_auto_ignore_ft = {'startify', 'dashboard'} "empty by default, don't auto open tree on specific filetypes.
-"let g:nvim_tree_quit_on_open = 1 "0 by default, closes the tree when you open a file
-let g:nvim_tree_follow = 1 "0 by default, this option allows the cursor to be updated when entering a buffer
-let g:nvim_tree_indent_markers = 1 "0 by default, this option shows indent markers when folders are open
-let g:nvim_tree_hide_dotfiles = 1 "0 by default, this option hides files and folders starting with a dot `.`
-let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
-let g:nvim_tree_root_folder_modifier = ':~' "This is the default. See :help filename-modifiers for more options
-let g:nvim_tree_tab_open = 1 "0 by default, will open the tree when entering a new tab and the tree was previously open
-let g:nvim_tree_width_allow_resize  = 1 "0 by default, will not resize the tree when opening a file
-" let g:nvim_tree_disable_netrw = 0 "1 by default, disables netrw
-" let g:nvim_tree_hijack_netrw = 0 "1 by default, prevents netrw from automatically opening when opening directories (but lets you keep its other utilities)
-" let g:nvim_tree_add_trailing = 1 "0 by default, append a trailing slash to folder names
-let g:nvim_tree_show_icons = { 'git': 1, 'folders': 1, 'files': 1, }
-"If 0, do not show the icons for one of 'git' 'folder' and 'files'
-"1 by default, notice that if 'files' is 1, it will only display
-"if nvim-web-devicons is installed and on your runtimepath
-
-" default will show icon by default if no icon is provided
-" default shows no icon by default
-let g:nvim_tree_icons = {
-    \ 'default': '',
-    \ 'symlink': '',
-    \ 'git': {
-    \   'unstaged': "✗", 'staged': "✓", 'unmerged': "", 'renamed': "➜",  'untracked': "★"  },
-    \ 'folder': {
-    \   'default': "", 'open': "", 'empty': "", 'empty_open': "", 'symlink': "", 'symlink_open': ""  }
-    \ }
-
-nnoremap <leader>tt :NvimTreeToggle<CR>
-nnoremap <leader>tr :NvimTreeRefresh<CR>
-nnoremap <leader>tn :NvimTreeFindFile<CR>
-" NvimTreeOpen and NvimTreeClose are also available if you need them
-" NvimTreeFindFile will open tree view and focus on it
-
-"Open file in current buffer or in split with FzF like bindings (<CR>, <C-v>, <C-x>, <C-t>)
-
-" a list of groups can be found at `:help nvim_tree_highlight`
-highlight NvimTreeFolderIcon guibg=blue
 
 "------------------------------------------------------------------------------
 " vim-maximizer
