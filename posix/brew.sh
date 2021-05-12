@@ -16,25 +16,32 @@ BREW_PREFIX=$(brew --prefix)
 brew install coreutils
 ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 
-# Install `wget` with IRI support.
-brew install wget --with-iri
 
-# # Install more recent versions of some macOS tools.
-brew install python
-brew install vim --with-override-system-vi
-brew install grep
-brew install openssh
-
-
-# # Install other useful binaries.
 brew install ack
+brew install bat
+brew install dust
+brew install exa
+brew install fd
+brew install fzf
 brew install git
 brew install git-lfs
-# brew install gs
 brew install imagemagick --with-webp
+brew install lsd
 brew install lua
-brew install lynx
+brew install neovim
+brew install nu
+brew install openssh
 brew install p7zip
+brew install procs
+brew install python
+brew install ripgrep
+brew install sd
+brew install starship
+brew install tokei
+brew install wget
+brew install zoxide
+
+
 
 # Remove outdated versions from the cellar.
 brew cleanup
