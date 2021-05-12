@@ -39,7 +39,7 @@ function yt_remove_empty_dir {
 }
 
 function get_functions {
-    gci function: | Where-Object { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
+    gci function: | Where { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
 }
 
 function yt_get_functions {
@@ -60,6 +60,10 @@ function yt_get_functions {
         elseif ($CurrentFileContent -imatch $_) { $_ } }
     } | sort-object
 #>
+}
+
+function yt_run_function {
+    yt_get_functions | fzf | iex
 }
 
 function yt_search_word
