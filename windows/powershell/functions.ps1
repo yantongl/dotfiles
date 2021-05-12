@@ -10,36 +10,18 @@ ${function:....} = { Set-Location ..\..\.. }
 ${function:.....} = { Set-Location ..\..\..\.. }
 ${function:......} = { Set-Location ..\..\..\..\.. }
 
-
-# Directory Listing: Use `ls.exe` if available
-# if (Get-Command ls.exe -ErrorAction SilentlyContinue | Test-Path) {
-#     rm alias:ls -ErrorAction SilentlyContinue
-#     # Set `ls` to call `ls.exe` and always use --color
-#     ${function:ls} = { ls.exe --color @args }
-#     # List all files in long format
-#     ${function:l} = { ls -lF @args }
-#     # List all files in long format, including hidden files
-#     ${function:la} = { ls -laF @args }
-# } else {
-#     # List all files, including hidden files
-#     ${function:la} = { ls -Force @args }
-# }
-
-# List only directories
-#${function:lsd} = { Get-ChildItem -Directory -Force @args }  # conflicting with rust lsd
-
 # add VC vars
-function add_vc_vars {
+function yt_add_vc_vars {
     cmd.exe /c "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Auxiliary\Build\vcvars32.bat"
 }
 
-function check_system_paths { echo $env:path.Split(';') }
+function yt_check_system_paths { echo $env:path.Split(';') }
 
-function reload_system_path {
+function yt_reload_system_path {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 }
 
-function remove_empty_dir {
+function yt_remove_empty_dir {
     # gci is get-childitem
     $folder = $args[0]
     write-output ("working directory:"+$folder)
@@ -57,6 +39,14 @@ function remove_empty_dir {
 }
 
 function get_functions {
+    gci function: | Where-Object { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
+}
+
+function yt_get_functions {
+    # gci function: | Where-Object { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
+    gci function: | Where-Object { $_.Name -like "yt_*" } | Select-Object -Property Name
+
+<#
     # read current file
     # $ProfileDir = Split-Path -parent $profile
     # $CurrentFilePath = "$ProfileDir\functions.ps1"
@@ -69,9 +59,10 @@ function get_functions {
         if ($_ -eq "cd\") { $_ }
         elseif ($CurrentFileContent -imatch $_) { $_ } }
     } | sort-object
+#>
 }
 
-function search_word
+function yt_search_word
 {
     $word = $args[0]
 
@@ -88,7 +79,7 @@ function search_word
 }
 
 # export scoop app names to scoop-apps.txt
-function scoop_export
+function yt_scoop_export
 {
     $filename = "scoop-apps.txt"
     if ($args.Length -gt 0) {
@@ -98,7 +89,7 @@ function scoop_export
 }
 
 # install apps from scoop-apps.txt
-function scoop_import
+function yt_scoop_import
 {
     $filename = "scoop-apps.txt"
     if ($args.Length -gt 0) {
@@ -109,7 +100,7 @@ function scoop_import
 }
 
 # find out what app is installed locally but not in scoop-apps.txt
-function scoop_diff_apps
+function yt_scoop_diff_apps
 {
     $filename = "scoop-apps.txt"
     if ($args.Length -gt 0) {
@@ -120,7 +111,7 @@ function scoop_diff_apps
     compare-object -ReferenceObject $installed -DifferenceObject $keyapps -PassThru
 }
 
-function setup_powershell_theme
+function yt_setup_powershell_theme
 {
     Invoke-Expression (&starship init powershell)
     Import-Module -Name Terminal-Icons
@@ -133,7 +124,7 @@ function setup_powershell_theme
 #     pshazz use lukes
 }
 
-function cleanup_build_files {
+function yt_cleanup_build_files {
     rm -Recurse *.sdf
     rm -Recurse *.pdb
     rm -Recurse *.ilk
