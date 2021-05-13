@@ -38,13 +38,9 @@ function yt_remove_empty_dir {
     }
 }
 
-function get_functions {
-    gci function: | Where { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
-}
-
 function yt_get_functions {
-    # gci function: | Where-Object { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
-    gci function: | Where-Object { $_.Name -like "yt_*" } | Select-Object -Property Name
+    gci function: | Where-Object { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
+    # gci function: | Where-Object { $_.Name -like "yt_*" } | Select-Object -Property Name
 
 <#
     # read current file

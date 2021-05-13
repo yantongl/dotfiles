@@ -19,7 +19,7 @@ function yt_save_bookmarks {
     $bookmarks.getenumerator() | export-csv $bookmarkPath -notype
 }
 
-function add_bookmark () {
+function yt_add_bookmark () {
     Param (
         [Parameter(Position = 0, Mandatory = $true)]
         [Alias("Bookmark")]
@@ -93,7 +93,7 @@ function yt_fzf_goto_bookmark {
     yt_goto_bookmark (yt_list_bookmarks | foreach-object {$_.Name} | fzf)
 }
 
-Set-Alias ba add_bookmark
+Set-Alias ba yt_add_bookmark
 Set-Alias bg yt_fzf_goto_bookmark
 Set-Alias bl yt_list_bookmarks
 Set-Alias br yt_remove_bookmark
