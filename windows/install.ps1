@@ -1,12 +1,12 @@
-<#
-Run this script as administrator!
+#
+# Run this script as administrator!
 
-How to setup Windows DevEnvironment:
-1.  install MSYS2:     https://www.msys2.org/
-    add `<path-to-msys64>\mingw64\bin` to environment path
-2.  install Windows-Terminal
-3.  run this script as Admin
-#>
+# How to setup Windows DevEnvironment:
+# 1.  install MSYS2:     https://www.msys2.org/
+#     add `<path-to-msys64>\mingw64\bin` to environment path
+# 2.  install Windows-Terminal
+# 3.  run this script as Admin
+#
 
 echo "Running init..."
 
@@ -28,6 +28,7 @@ Function MakeSymbolicLink([string] $target, [string] $source) {
 }
 
 Function ConfigPowershell {
+    Write-Output "******** ConfigPowershell ********"
     $profileDir = Split-Path -parent $profile
     New-Item $profileDir -ItemType Directory -Force -ErrorAction SilentlyContinue # create $profileDir folder
 
@@ -35,11 +36,13 @@ Function ConfigPowershell {
     gci powershell *.ps1 | foreach-object { MakeSymbolicLink "$profileDir\$($_.Name)" $_.fullname }
 
     # install powershell modules
-    Install-Module -Name Terminal-Icons -Repository PSGallery
-    scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+    if (-not (Get-Module -Name "Terminal-Icons")) {
+        Install-Module -Name Terminal-Icons -Repository PSGallery
+    }
 }
 
 Function InstallPackageManager {
+    Write-Output "******** InstallPackageManager ********"
     # install chocolatey
     if (-not (IsInstalled choco))
     {
@@ -69,11 +72,13 @@ Function InstallPackageManager {
     # install core scoop apps
     $apps = gc scoop-key-apps.txt
     scoop install @apps
+    scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
     # install apps on chocolatey only
     choco install barrier
 }
 
 Function ConfigMiscTools {
+    Write-Output "******** ConfigMiscTools ********"
     $location = get-location
     $currentDir = $location.Path
     $dotfilesDir = Split-Path -parent $currentDir
@@ -111,6 +116,11 @@ pushd
     ConfigPowershell
     InstallPackageManager
     ConfigMiscTools
+
+    Write-Output "******** upgrade pip ********"
+    # upgrade pip
+    python -m pip install --upgrade pip
+    #
 popd
 
 
