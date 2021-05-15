@@ -36,7 +36,7 @@ call plug#begin(plugpath)
     " file explorer
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     "Plug 'kyazdani42/nvim-tree.lua', { 'on': 'NvimTreeToggle' }
-    Plug 'preservim/nerdtree' 
+    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' } 
     Plug 'preservim/nerdcommenter'
     Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }   " tag list
     Plug 'tpope/vim-fugitive'   " git plugin
@@ -54,7 +54,7 @@ call plug#begin(plugpath)
     Plug 'nvim-telescope/telescope-vimspector.nvim'
 
     " Syntax highlighting
-    Plug 'PProvost/vim-ps1'
+    Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
 
     " tree-sitter
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -456,7 +456,9 @@ nnoremap <leader>nn :NERDTreeFocus<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 " NERDTreeFind will show directory on current file
 
-
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 "------------------------------------------------------------------------------
 " vim-maximizer
