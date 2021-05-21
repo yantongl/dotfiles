@@ -244,8 +244,9 @@ nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
 
 " set F2 as save
-map <F2> :up<CR>
-imap <F2> <C-O>:up<CR>
+noremap <F2> :up<CR>
+vnoremap <silent> <F2> <C-C>:update<CR>
+inoremap <silent> <F2> <C-O>:up<CR>
 " <F3> is the used by Maximizer by default
 
 let g:which_key_map = {}  " define vim-which-key prefix dictionary
