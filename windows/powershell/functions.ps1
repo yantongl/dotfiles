@@ -39,23 +39,10 @@ function yt_remove_empty_dir {
 }
 
 function yt_get_functions {
-    gci function: | Where-Object { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | Select-Object -Property Name
-    # gci function: | Where-Object { $_.Name -like "yt_*" } | Select-Object -Property Name
+    # this will show more than my functions, but since we normally call yt_run_function which pipes the list into fzf, it is not a big deal
+    gci function: | Where-Object { $_.Source -eq "" -and $_.Name -notlike "*:" -and $_.Name -NotLike "__*"} | ForEach-Object { $_.Name }
+    # gci function: | Where-Object { $_.Name -like "yt_*" } | ForEach-Object { $_.Name }
 
-<#
-    # read current file
-    # $ProfileDir = Split-Path -parent $profile
-    # $CurrentFilePath = "$ProfileDir\functions.ps1"
-    $CurrentFilePath = Join-Path (split-path -parent $profile) functions.ps1
-    $CurrentFileContent = get-content $CurrentFilePath
-    # get functions defined in this file
-    gci function: -Name | foreach-object { if ($_ -notlike "*:") {
-        # special check "cd\" because -imatch will consider '\' as escape character and the
-        # function as in-complete string
-        if ($_ -eq "cd\") { $_ }
-        elseif ($CurrentFileContent -imatch $_) { $_ } }
-    } | sort-object
-#>
 }
 
 function yt_run_function {
