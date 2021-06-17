@@ -96,12 +96,9 @@
     "vsicons.dontShowNewVersionMessage": true,
     "window.zoomLevel": 0,
     "workbench.colorTheme": "Visual Studio 2019 Dark",
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
-    ],
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
     "workbench.iconTheme": "vscode-icons",
     "python.languageServer": "Pylance",
     "python.linting.mypyArgs": [
@@ -114,5 +111,9 @@
     },
     "markdown-preview-enhanced.revealjsTheme": "league.css",
     "terminal.integrated.fontSize": 14,
-    "editor.wordWrapColumn": 120
+    "editor.wordWrapColumn": 120,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    }
 }

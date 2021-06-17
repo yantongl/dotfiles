@@ -8,7 +8,7 @@
 		"dll",
 		"json"
 	],
-	"color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
+	"color_scheme": "Packages/Gruvbox Dark/gruvbox.tmTheme",
 	"file_exclude_patterns":
 	[
 		"*.pyc",
@@ -48,6 +48,7 @@
 	"ignored_packages":
 	[
 		"ActionScript",
+		"Anaconda",
 		"AppleScript",
 		"ASP",
 		"Clojure",
@@ -65,13 +66,16 @@
 		"Pascal",
 		"Perl",
 		"PHP",
+		"Pretty JSON",
 		"R",
 		"Rails",
 		"Rust",
 		"Scala",
+		"SublimeLinter",
 		"SublimeLinter-pep8",
+		"SublimeLinter-pyflakes",
 		"TCL",
-		"Textile"
+		"Textile",
 	],
 	"ignored_words":
 	[
@@ -85,6 +89,7 @@
 		"sln",
 		"x86"
 	],
+	"index_files" : false,
 	"rulers":
 	[
 		80,
@@ -95,5 +100,5 @@
 	"theme": "Soda SolarizedDark.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
-	"vintage_start_in_command_mode": false
+	"vintage_start_in_command_mode": false,
 }
