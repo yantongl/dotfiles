@@ -30,6 +30,7 @@ format = "[ 羽 $duration ](italic dimmed black bg:cyan)"
 truncation_length = 6
 truncation_symbol = "…/"
 truncate_to_repo = true
+style = "cyan"
 
 [memory_usage]
 disabled = false
