@@ -3,11 +3,11 @@
 # Set-Alias time Measure-Command
 
 # Set GVim as default vim
-Set-Alias vim nvim
-Set-Alias qv nvim-qt
-Set-Alias sw yt_search_word
-Set-Alias gf yt_get_functions
-Set-Alias rfi yt_run_function
+New-Alias vim nvim
+New-Alias qv nvim-qt
+New-Alias sw yt_search_word
+New-Alias gf yt_get_functions
+New-Alias rfi yt_run_function
 
 $profiledir=(Split-Path -parent $profile)
 

@@ -20,7 +20,8 @@ Function MakeSymbolicLink([string] $target, [string] $source) {
     Remove-Item -Recurse "$target" -ErrorAction SilentlyContinue
     if (Test-Path -Path $source -PathType Container) {
     	Write-Output "make junction $target to $source"
-        iex "cmd /c mklink /J $target $source"
+        # iex "cmd /c mklink /J $target $source"
+        New-Item -Path "$target" -ItemType Junction -Value "$source"
     } else {
     	Write-Output "linking file $target to $source"
         New-Item -Path "$target" -ItemType SymbolicLink -Value "$source"
