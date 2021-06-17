@@ -62,10 +62,12 @@ call plug#begin(plugpath)
 
     " LSP
     Plug 'neovim/nvim-lspconfig'
-    "Plug 'kabouzeid/nvim-lspinstall'   " this config runs cmd line as in linux shell. Not work on Windows
+    "Plug 'williamboman/nvim-lsp-installer'
+    " Plug 'kabouzeid/nvim-lspinstall'   " this config runs cmd line as in linux shell. Not work on Windows
     "Plug 'anott03/nvim-lspinstall'     " this plug has little LSP server I want
+    Plug 'prabirshrestha/vim-lsp'
     Plug 'mattn/vim-lsp-settings'       " this works great. Just :LspInstallServer after open a file, it will install for current file
-    Plug 'onsails/lspkind-nvim'
+    "Plug 'onsails/lspkind-nvim'         " adds VSCode style pictograms to neovim built-in lsp
 
     " colorscheme
     Plug 'tomasiser/vim-code-dark' " Nice colorscheme based on Visual Studio dark
@@ -143,7 +145,7 @@ call plug#end()            " required
     set colorcolumn=+1,+21,-19  " highlight column after textwidth
 
     " colorscheme must be set after plug configuration
-    colorscheme dracula
+    colorscheme codedark
 
     " hi ColorColumn ctermbg=lightgrey guibg=red
     hi ColorColumn guibg=red
@@ -271,8 +273,13 @@ function! FormatCleanup()
     :retab
     :%s/\r//ge   " replace DOS line-end characters to UNIX line-end
 endfunction
-noremap <leader>bf :call FormatCleanup()<CR>
-let g:which_key_map.b.f = 'format buffer'
+noremap <leader>bc :call FormatCleanup()<CR>
+let g:which_key_map.b.c = 'cleanup buffer (strip spaces)'
+
+" gg goes to the begging of the buffer, = is format, and takes a movement command, G is to the end 
+" of the buffer
+noremap <silent> <leader>bf  gg=G
+let g:which_key_map.b.f = "format whole buffer"
 
 noremap <silent> <leader>fv :e $MYVIMRC<cr>
 let g:which_key_map.f.v = 'open $MYVIMRC'
